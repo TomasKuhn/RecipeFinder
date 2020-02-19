@@ -26,77 +26,75 @@ fun ContentLoadingProgressBar.setIsLoading(isLoading: Boolean) {
 }
 
 @BindingAdapter("isActivated")
-fun setIsActivated(view: View, isActivated: Boolean) {
-    view.isActivated = isActivated
+fun View.setIsActivated(isActivated: Boolean) {
+    this@setIsActivated.isActivated = isActivated
 }
 
 @BindingAdapter("isEnabled")
-fun setIsEnabled(view: View, isEnabled: Boolean) {
-    view.isEnabled = isEnabled
-    if (view is ViewGroup) {
-        view.forEach {
-            setIsEnabled(it, isEnabled)
+fun View.setIsEnabled(isEnabled: Boolean) {
+    this@setIsEnabled.isEnabled = isEnabled
+    if (this is ViewGroup) {
+        forEach {
+            setIsEnabled(isEnabled)
         }
     }
 }
 
 @BindingAdapter("url")
-fun setWebViewUrl(view: WebView, url: String?) {
+fun WebView.setWebViewUrl(url: String?) {
     if (url != null) {
-        view.loadUrl(url)
+        loadUrl(url)
     }
 }
 
 @BindingAdapter("error")
-fun setTextInputError(view: TextInputLayout, error: String?) {
-    view.error = error
+fun TextInputLayout.setTextInputError(error: String?) {
+    this@setTextInputError.error = error
 }
 
 @BindingAdapter(value = ["items", "itemLayout", "scrollToBottom"], requireAll = false)
-fun <T> setRecyclerViewItems(
-    view: RecyclerView,
+fun <T> RecyclerView.setRecyclerViewItems(
     items: List<T>?, @LayoutRes layoutId: Int,
     scrollToBottom: Boolean = false
 ) {
     if (items != null) {
-        var currentAdapter = (view.adapter as? BindingRecyclerAdapter<T, *>)
+        var currentAdapter = (adapter as? BindingRecyclerAdapter<T, *>)
         if (currentAdapter == null) {
             currentAdapter =
                 BindingRecyclerAdapter(
                     layoutId,
                     LayoutBinder(),
-                    view.context as? LifecycleOwner
+                    context as? LifecycleOwner
                 )
-            view.adapter = currentAdapter
+            adapter = currentAdapter
         }
         currentAdapter.setItems(items)
 
         if (scrollToBottom) {
-            view.scrollToBottom()
+            scrollToBottom()
         }
     }
 }
 
 @BindingAdapter(value = ["idItems", "itemLayout", "scrollToBottom"], requireAll = false)
-fun <T : Identifiable> setRecyclerViewIdItems(
-    view: RecyclerView,
+fun <T : Identifiable> RecyclerView.setRecyclerViewIdItems(
     items: List<T>?, @LayoutRes layoutId: Int,
     scrollToBottom: Boolean = false
 ) {
     if (items != null) {
-        var currentAdapter = (view.adapter as? IdBindingRecyclerAdapter<T, *>)
+        var currentAdapter = (adapter as? IdBindingRecyclerAdapter<T, *>)
         if (currentAdapter == null) {
             currentAdapter = IdBindingRecyclerAdapter(
                 layoutId,
                 LayoutBinder(),
-                view.context as? LifecycleOwner
+                context as? LifecycleOwner
             )
-            view.adapter = currentAdapter
+            adapter = currentAdapter
         }
         currentAdapter.setItems(items)
 
         if (scrollToBottom) {
-            view.scrollToBottom()
+            scrollToBottom()
         }
     }
 }
