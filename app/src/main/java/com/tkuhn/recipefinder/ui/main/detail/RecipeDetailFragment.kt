@@ -4,29 +4,28 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.navArgs
 import com.tkuhn.recipefinder.R
-import com.tkuhn.recipefinder.databinding.FragmentDetailBinding
+import com.tkuhn.recipefinder.databinding.FragmentRecipeDetailBinding
 import com.tkuhn.recipefinder.ui.BaseFragment
-import com.tkuhn.recipefinder.utils.addBackArrow
-import kotlinx.android.synthetic.main.fragment_detail.*
+import com.tkuhn.recipefinder.utils.extensions.addBackArrow
+import kotlinx.android.synthetic.main.fragment_recipe_detail.*
 import org.koin.androidx.viewmodel.ext.android.getStateViewModel
 import org.koin.core.parameter.parametersOf
 
-class DetailFragment :
-    BaseFragment<DetailViewModel, FragmentDetailBinding>(R.layout.fragment_detail) {
+class RecipeDetailFragment : BaseFragment<RecipeDetailViewModel, FragmentRecipeDetailBinding>(R.layout.fragment_recipe_detail) {
 
-    private lateinit var args: DetailFragmentArgs
+    private lateinit var args: RecipeDetailFragmentArgs
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        args = navArgs<DetailFragmentArgs>().value
+        args = navArgs<RecipeDetailFragmentArgs>().value
         super.onCreate(savedInstanceState)
     }
 
-    override fun viewModel(): DetailViewModel = getStateViewModel { parametersOf(args.forecast) }
+    override fun viewModel(): RecipeDetailViewModel = getStateViewModel { parametersOf(args.recipeId) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = vm
-        vToolbarDetail.addBackArrow()
+        vToolbarRecipeDetail.addBackArrow()
     }
 }

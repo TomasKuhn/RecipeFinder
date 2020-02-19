@@ -1,4 +1,4 @@
-package com.tkuhn.recipefinder.utils
+package com.tkuhn.recipefinder.utils.extensions
 
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat

@@ -1,4 +1,4 @@
-package com.tkuhn.recipefinder.utils
+package com.tkuhn.recipefinder.utils.databinding
 
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +11,8 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
-import com.tkuhn.recipefinder.BR
+import com.tkuhn.recipefinder.utils.Identifiable
+import com.tkuhn.recipefinder.utils.extensions.scrollToBottom
 
 @BindingAdapter("isVisible")
 fun View.setIsVisible(isVisible: Boolean) {
@@ -60,7 +61,11 @@ fun <T> setRecyclerViewItems(
         var currentAdapter = (view.adapter as? BindingRecyclerAdapter<T, *>)
         if (currentAdapter == null) {
             currentAdapter =
-                BindingRecyclerAdapter(layoutId, LayoutBinder(), view.context as? LifecycleOwner)
+                BindingRecyclerAdapter(
+                    layoutId,
+                    LayoutBinder(),
+                    view.context as? LifecycleOwner
+                )
             view.adapter = currentAdapter
         }
         currentAdapter.setItems(items)
@@ -80,8 +85,11 @@ fun <T : Identifiable> setRecyclerViewIdItems(
     if (items != null) {
         var currentAdapter = (view.adapter as? IdBindingRecyclerAdapter<T, *>)
         if (currentAdapter == null) {
-            currentAdapter =
-                IdBindingRecyclerAdapter(layoutId, LayoutBinder(), view.context as? LifecycleOwner)
+            currentAdapter = IdBindingRecyclerAdapter(
+                layoutId,
+                LayoutBinder(),
+                view.context as? LifecycleOwner
+            )
             view.adapter = currentAdapter
         }
         currentAdapter.setItems(items)
@@ -94,6 +102,6 @@ fun <T : Identifiable> setRecyclerViewIdItems(
 
 private class LayoutBinder<T> : DataBinder<T, ViewDataBinding>() {
     override fun bind(data: T, binding: ViewDataBinding) {
-        binding.setVariable(BR.data, data)
+        //        binding.setVariable(BR.data, data)
     }
 }

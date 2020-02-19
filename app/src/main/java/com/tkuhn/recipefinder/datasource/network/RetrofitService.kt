@@ -2,8 +2,8 @@ package com.tkuhn.recipefinder.datasource.network
 
 import com.tkuhn.recipefinder.App
 import com.tkuhn.recipefinder.R
-import com.tkuhn.recipefinder.utils.hasNetworkConnection
-import com.tkuhn.recipefinder.utils.toText
+import com.tkuhn.recipefinder.utils.extensions.hasNetworkConnection
+import com.tkuhn.recipefinder.utils.extensions.toText
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -20,7 +20,7 @@ class RetrofitService {
             OkHttpClient.Builder()
                 .addInterceptor(NoNetworkInterceptor())
                 .addInterceptor(ApiInterceptor())
-                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
+                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build()
         )
         .build()
@@ -44,9 +44,7 @@ class RetrofitService {
 
         override fun intercept(chain: Interceptor.Chain): Response {
             var request = chain.request()
-            val url =
-                request.url.newBuilder().addQueryParameter("appid", R.string.api_key.toText())
-                    .build()
+            val url = request.url.newBuilder().addQueryParameter("apiKey", R.string.api_key.toText()).build()
             request = request.newBuilder().url(url).build()
             return chain.proceed(request)
         }

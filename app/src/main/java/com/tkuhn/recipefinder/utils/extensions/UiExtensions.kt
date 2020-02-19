@@ -1,7 +1,10 @@
-package com.tkuhn.recipefinder.utils
+package com.tkuhn.recipefinder.utils.extensions
 
+import android.app.Activity
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -11,6 +14,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.tkuhn.recipefinder.R
 import kotlin.math.max
+
+fun Activity.hideKeyboard(view: View? = currentFocus, clearFocus: Boolean = false) {
+    view?.let {
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
+        if (clearFocus) {
+            it.clearFocus()
+        }
+    }
+}
+
+fun Fragment.hideKeyboard(view: View? = activity?.currentFocus, clearFocus: Boolean = false) {
+    activity?.hideKeyboard(view, clearFocus)
+}
 
 fun View.showSnackbar(message: String) {
     Snackbar.make(this, message, Snackbar.LENGTH_LONG).show()
@@ -23,7 +40,7 @@ fun Fragment.showSnackbar(message: String) {
 }
 
 fun RecyclerView.addDivider(divider: Drawable, skipAfterLast: Boolean = false) {
-    addItemDecoration(DividerItemDecoration(divider, skipAfterLast))
+    addItemDecoration(com.tkuhn.recipefinder.utils.DividerItemDecoration(divider, skipAfterLast))
 }
 
 fun RecyclerView.addVerticalDivider() {

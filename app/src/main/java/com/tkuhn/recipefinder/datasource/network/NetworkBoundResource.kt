@@ -17,7 +17,13 @@
 package com.tkuhn.recipefinder.datasource.network
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import retrofit2.Response
 
 /**
@@ -27,9 +33,9 @@ import retrofit2.Response
  * You can read more about it in the [Architecture
  * Guide](https://developer.android.com/arch).
  * @param <ResultType>
- * @param <RequestType>
-</RequestType></ResultType> */
-abstract class NetworkBoundResource<ResultType, RequestType> {
+ * @param <ResponseType>
+</ResponseType></ResultType> */
+abstract class NetworkBoundResource<ResultType, ResponseType> {
 
     fun loadData(): Flow<Resource<ResultType>> {
         var dbData: ResultType? = null
@@ -92,9 +98,9 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
 
     protected open fun onFetchFailed() {}
 
-    protected open fun processResponse(response: Response<RequestType>) = response.body()
+    protected open fun processResponse(response: Response<ResponseType>) = response.body()
 
-    protected abstract suspend fun saveCallResult(item: RequestType)
+    protected abstract suspend fun saveCallResult(item: ResponseType)
 
     protected abstract fun shouldFetch(data: ResultType?): Boolean
 
@@ -102,5 +108,5 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
 
     protected abstract suspend fun loadFromDb(): ResultType?
 
-    protected abstract suspend fun createCall(): Response<RequestType>
+    protected abstract suspend fun createCall(): Response<ResponseType>
 }

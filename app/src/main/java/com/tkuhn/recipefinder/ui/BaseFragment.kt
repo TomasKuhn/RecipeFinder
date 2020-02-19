@@ -8,7 +8,8 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
-import com.tkuhn.recipefinder.utils.showSnackbar
+import com.tkuhn.recipefinder.utils.extensions.hideKeyboard
+import com.tkuhn.recipefinder.utils.extensions.showSnackbar
 import com.wada811.databinding.dataBinding
 
 abstract class BaseFragment<VM : BaseViewModel, BINDING : ViewDataBinding>(@LayoutRes layoutResId: Int) :
@@ -21,11 +22,7 @@ abstract class BaseFragment<VM : BaseViewModel, BINDING : ViewDataBinding>(@Layo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm = viewModel().apply {
-            snackMessage.observe(this@BaseFragment) {
-                showSnackbar(it)
-            }
-        }
+        vm = viewModel()
     }
 
     override fun onCreateView(
@@ -34,5 +31,14 @@ abstract class BaseFragment<VM : BaseViewModel, BINDING : ViewDataBinding>(@Layo
         savedInstanceState: Bundle?
     ): View? {
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        vm.snackMessage.observe(viewLifecycleOwner) {
+            showSnackbar(it)
+        }
+        vm.hideKeyboardEvent.observe(viewLifecycleOwner) {
+            hideKeyboard()
+        }
     }
 }

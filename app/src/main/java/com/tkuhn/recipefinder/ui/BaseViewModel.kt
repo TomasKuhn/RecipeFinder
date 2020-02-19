@@ -16,6 +16,7 @@ open class BaseViewModel : ViewModel() {
 
     val snackMessage = LiveEvent<String>()
     val isLoading = MutableLiveData<Boolean>()
+    val hideKeyboardEvent = LiveEvent<Void>()
 
     protected fun <T> load(
         input: Flow<Resource<T>>,
@@ -58,4 +59,7 @@ open class BaseViewModel : ViewModel() {
         }
     }
 
+    protected fun hideKeyboard() {
+        hideKeyboardEvent.call()
+    }
 }

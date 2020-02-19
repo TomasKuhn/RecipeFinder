@@ -1,4 +1,4 @@
-package com.tkuhn.recipefinder.utils
+package com.tkuhn.recipefinder.utils.databinding
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -10,6 +10,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.tkuhn.recipefinder.utils.Identifiable
 
 open class BindingRecyclerAdapter<DATA, BINDING : ViewDataBinding>(
     @LayoutRes private val itemLayoutRes: Int,

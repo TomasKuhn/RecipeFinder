@@ -23,15 +23,16 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 
-abstract class NetworkCall<ResponseData> {
+abstract class NetworkCall<ResponseType, ResultType> {
 
-    fun execute(): Flow<Resource<ResponseData>> {
-        return flow<Resource<ResponseData>> {
+    fun execute(): Flow<Resource<ResultType>> {
+        return flow<Resource<ResultType>> {
             emit(Resource.Loading())
             val response = createCall()
             if (response.isSuccessful) {
                 val responseData = processResponse(response)
-                emit(Resource.Success(responseData))
+                val result = responseData?.let { convertResponse(it) }
+                emit(Resource.Success(result))
             } else {
                 onFailed()
                 emit(Resource.Error(ResourceError.HttpError(response.message(), response.code())))
@@ -43,7 +44,9 @@ abstract class NetworkCall<ResponseData> {
 
     protected open fun onFailed() {}
 
-    protected open fun processResponse(response: Response<ResponseData>) = response.body()
+    protected open fun processResponse(response: Response<ResponseType>) = response.body()
 
-    protected abstract suspend fun createCall(): Response<ResponseData>
+    protected open fun convertResponse(response: ResponseType): ResultType? = null
+
+    protected abstract suspend fun createCall(): Response<ResponseType>
 }
