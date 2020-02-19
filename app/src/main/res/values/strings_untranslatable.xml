@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="api_url" translatable="false">https://api.spoonacular.com/</string>
+    <string name="api_key" translatable="false">857107ebf4f742a590cd03d4a2ce95f6</string>
+</resources>
