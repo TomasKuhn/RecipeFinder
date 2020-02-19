@@ -15,7 +15,8 @@ import com.tkuhn.recipefinder.utils.Identifiable
 open class BindingRecyclerAdapter<DATA, BINDING : ViewDataBinding>(
     @LayoutRes private val itemLayoutRes: Int,
     private val binder: DataBinder<DATA, BINDING>,
-    private val lifecycleOwner: LifecycleOwner? = null
+    private val lifecycleOwner: LifecycleOwner? = null,
+    private val onItemClick: ((DATA) -> Unit)? = null
 ) : RecyclerView.Adapter<DataViewHolder<BINDING>>() {
 
     var data: List<DATA> = listOf()
@@ -25,7 +26,13 @@ open class BindingRecyclerAdapter<DATA, BINDING : ViewDataBinding>(
     override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: DataViewHolder<BINDING>, position: Int) {
-        binder.bind(data[position], holder.binding)
+        val item = data[position]
+        binder.bind(item, holder.binding)
+        if (onItemClick != null) {
+            holder.itemView.setOnClickListener {
+                onItemClick.invoke(item)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder<BINDING> {
@@ -70,7 +77,8 @@ open class BindingRecyclerAdapter<DATA, BINDING : ViewDataBinding>(
 open class IdBindingRecyclerAdapter<DATA : Identifiable, BINDING : ViewDataBinding>(
     @LayoutRes private val itemLayoutRes: Int,
     private var binder: DataBinder<DATA, BINDING>,
-    private val lifecycleOwner: LifecycleOwner? = null
+    private val lifecycleOwner: LifecycleOwner? = null,
+    private val onItemClick: ((DATA) -> Unit)? = null
 ) : ListAdapter<DATA, DataViewHolder<BINDING>>(object : DiffUtil.ItemCallback<DATA>() {
 
     @SuppressLint("DiffUtilEquals")
@@ -86,7 +94,13 @@ open class IdBindingRecyclerAdapter<DATA : Identifiable, BINDING : ViewDataBindi
     private val bindingHolders = HashSet<DataViewHolder<BINDING>>()
 
     override fun onBindViewHolder(holder: DataViewHolder<BINDING>, position: Int) {
-        binder.bind(currentList[position], holder.binding)
+        val item = currentList[position]
+        binder.bind(item, holder.binding)
+        if (onItemClick != null) {
+            holder.itemView.setOnClickListener {
+                onItemClick.invoke(item)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder<BINDING> {

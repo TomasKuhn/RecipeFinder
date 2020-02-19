@@ -15,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:paddingStart="24dp"
-        android:paddingEnd="24dp">
+        android:paddingEnd="24dp"
+        android:background="?selectableItemBackground">
 
         <TextView
             android:id="@+id/vTextRecipeName"

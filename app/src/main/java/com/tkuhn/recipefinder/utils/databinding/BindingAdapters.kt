@@ -52,20 +52,22 @@ fun TextInputLayout.setTextInputError(error: String?) {
     this@setTextInputError.error = error
 }
 
-@BindingAdapter(value = ["items", "itemLayout", "scrollToBottom"], requireAll = false)
+@BindingAdapter(value = ["items", "itemLayout", "scrollToBottom", "onItemClick"], requireAll = false)
 fun <T> RecyclerView.setRecyclerViewItems(
-    items: List<T>?, @LayoutRes layoutId: Int,
-    scrollToBottom: Boolean = false
+        items: List<T>?,
+        @LayoutRes layoutId: Int,
+        scrollToBottom: Boolean = false,
+        onItemClick: ((T) -> Unit)?
 ) {
     if (items != null) {
         var currentAdapter = (adapter as? BindingRecyclerAdapter<T, *>)
         if (currentAdapter == null) {
-            currentAdapter =
-                BindingRecyclerAdapter(
+            currentAdapter = BindingRecyclerAdapter(
                     layoutId,
                     LayoutBinder(),
-                    context as? LifecycleOwner
-                )
+                    context as? LifecycleOwner,
+                    onItemClick
+            )
             adapter = currentAdapter
         }
         currentAdapter.setItems(items)
@@ -76,18 +78,21 @@ fun <T> RecyclerView.setRecyclerViewItems(
     }
 }
 
-@BindingAdapter(value = ["idItems", "itemLayout", "scrollToBottom"], requireAll = false)
+@BindingAdapter(value = ["idItems", "itemLayout", "scrollToBottom", "onItemClick"], requireAll = false)
 fun <T : Identifiable> RecyclerView.setRecyclerViewIdItems(
-    items: List<T>?, @LayoutRes layoutId: Int,
-    scrollToBottom: Boolean = false
+        items: List<T>?,
+        @LayoutRes layoutId: Int,
+        scrollToBottom: Boolean = false,
+        onItemClick: ((T) -> Unit)?
 ) {
     if (items != null) {
         var currentAdapter = (adapter as? IdBindingRecyclerAdapter<T, *>)
         if (currentAdapter == null) {
             currentAdapter = IdBindingRecyclerAdapter(
-                layoutId,
-                LayoutBinder(),
-                context as? LifecycleOwner
+                    layoutId,
+                    LayoutBinder(),
+                    context as? LifecycleOwner,
+                    onItemClick
             )
             adapter = currentAdapter
         }

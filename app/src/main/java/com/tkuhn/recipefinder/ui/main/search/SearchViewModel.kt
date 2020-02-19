@@ -7,6 +7,7 @@ import com.tkuhn.recipefinder.domain.Recipe
 import com.tkuhn.recipefinder.repository.RecipesRepo
 import com.tkuhn.recipefinder.ui.BaseViewModel
 import com.tkuhn.recipefinder.utils.notNull
+import timber.log.Timber
 import kotlin.contracts.ExperimentalContracts
 
 class SearchViewModel(
@@ -18,6 +19,9 @@ class SearchViewModel(
     val maxCalories = savedStateHandle.getLiveData<String>("maxCalories")
     val recipes = MutableLiveData<List<Recipe>>()
     val noRecipesFound = recipes.map { it?.isEmpty() == true }
+    val onItemClick: (Recipe) -> Unit = {
+        Timber.d("On item click $it")
+    }
 
     @UseExperimental(ExperimentalContracts::class)
     fun search() {
