@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -73,6 +74,7 @@
             app:layout_constraintTop_toBottomOf="@+id/vTilMaxCalories" />
 
         <ProgressBar
+            android:id="@+id/progressBar"
             isVisible="@{vm.isLoading()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,6 +82,49 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/vLabelRecipes"
+            isVisible="@{vm.recipes != null}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:text="Recipes"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vButtonSearch" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            style="@style/Recycler"
+            idItems="@{vm.recipes}"
+            itemLayout="@{@layout/item_recipe}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vLabelRecipes"
+            app:layout_constraintVertical_bias="0.0"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_recipe" />
+
+        <TextView
+            android:id="@+id/vLabelNoRecipes"
+            isVisible="@{vm.noRecipesFound}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.5"
+            android:text="No recipes :("
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/recyclerView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

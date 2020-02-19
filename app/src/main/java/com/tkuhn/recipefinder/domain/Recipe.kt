@@ -1,6 +1,8 @@
 package com.tkuhn.recipefinder.domain
 
+import com.tkuhn.recipefinder.utils.Identifiable
+
 data class Recipe(
-    val id: Long,
+    override val id: Long,
     val title: String
-)
+) : Identifiable

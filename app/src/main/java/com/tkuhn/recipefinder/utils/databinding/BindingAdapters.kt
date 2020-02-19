@@ -11,6 +11,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
+import com.tkuhn.recipefinder.BR
 import com.tkuhn.recipefinder.utils.Identifiable
 import com.tkuhn.recipefinder.utils.extensions.scrollToBottom
 
@@ -102,6 +103,6 @@ fun <T : Identifiable> setRecyclerViewIdItems(
 
 private class LayoutBinder<T> : DataBinder<T, ViewDataBinding>() {
     override fun bind(data: T, binding: ViewDataBinding) {
-        //        binding.setVariable(BR.data, data)
+        binding.setVariable(BR.data, data)
     }
 }
