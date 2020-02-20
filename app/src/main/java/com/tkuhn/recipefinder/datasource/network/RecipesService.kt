@@ -12,7 +12,8 @@ interface RecipesService {
     @GET("recipes/findByNutrients")
     suspend fun findRecipesByNutrient(
         @Query("minCalories") minCalories: Int,
-        @Query("maxCalories") maxCalories: Int
+        @Query("maxCalories") maxCalories: Int,
+        @Query("number") number: Int = 30
     ): Response<List<NetworkRecipe>>
 
     @GET("recipes/{id}/information")
