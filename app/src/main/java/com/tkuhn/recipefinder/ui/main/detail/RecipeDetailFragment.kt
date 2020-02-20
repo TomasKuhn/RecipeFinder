@@ -8,7 +8,7 @@ import com.tkuhn.recipefinder.databinding.FragmentRecipeDetailBinding
 import com.tkuhn.recipefinder.ui.BaseFragment
 import com.tkuhn.recipefinder.utils.extensions.addBackArrow
 import kotlinx.android.synthetic.main.fragment_recipe_detail.*
-import org.koin.androidx.viewmodel.ext.android.getStateViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
 
 class RecipeDetailFragment : BaseFragment<RecipeDetailViewModel, FragmentRecipeDetailBinding>(R.layout.fragment_recipe_detail) {
@@ -20,7 +20,7 @@ class RecipeDetailFragment : BaseFragment<RecipeDetailViewModel, FragmentRecipeD
         super.onCreate(savedInstanceState)
     }
 
-    override fun viewModel(): RecipeDetailViewModel = getStateViewModel { parametersOf(args.recipeId) }
+    override fun viewModel(): RecipeDetailViewModel = getViewModel { parametersOf(args.recipeId) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

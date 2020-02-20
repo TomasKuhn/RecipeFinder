@@ -15,6 +15,5 @@ class MainActivity :
         super.onCreate(savedInstanceState)
 
         binding.vm = vm
-
     }
 }

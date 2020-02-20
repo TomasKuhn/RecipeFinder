@@ -1,6 +1,5 @@
 package com.tkuhn.recipefinder.datasource.network
 
-
 sealed class Resource<out T> {
     abstract val data: T?
 

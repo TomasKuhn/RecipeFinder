@@ -4,8 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "Forecast")
-data class DbForecast(
+@Entity(tableName = "RecipeDetails")
+data class DbRecipeDetail(
     @PrimaryKey
-    @ColumnInfo(name = "cod") val cod: String
+    @ColumnInfo(name = "id") val id: Long,
+    @ColumnInfo(name = "title") val title: String
 )

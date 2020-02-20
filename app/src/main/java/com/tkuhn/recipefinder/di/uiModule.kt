@@ -10,5 +10,5 @@ import org.koin.dsl.module
 val uiModule = module {
     viewModel { MainActivityViewModel() }
     viewModel { (handle: SavedStateHandle) -> SearchViewModel(handle, get()) }
-    viewModel { (recipeId: Long) -> RecipeDetailViewModel(recipeId) }
+    viewModel { (recipeId: Long) -> RecipeDetailViewModel(recipeId, get()) }
 }

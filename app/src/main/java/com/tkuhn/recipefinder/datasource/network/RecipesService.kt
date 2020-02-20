@@ -1,8 +1,10 @@
 package com.tkuhn.recipefinder.datasource.network
 
 import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipe
+import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipeDetail
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RecipesService {
@@ -12,4 +14,7 @@ interface RecipesService {
         @Query("minCalories") minCalories: Int,
         @Query("maxCalories") maxCalories: Int
     ): Response<List<NetworkRecipe>>
+
+    @GET("recipes/{id}/information")
+    suspend fun getRecipeDetail(@Path("id") recipeId: Long): Response<NetworkRecipeDetail>
 }

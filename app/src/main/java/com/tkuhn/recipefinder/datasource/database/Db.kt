@@ -5,19 +5,18 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.tkuhn.recipefinder.App
-import com.tkuhn.recipefinder.datasource.database.dao.ForecastDao
-import com.tkuhn.recipefinder.datasource.database.dto.DbForecast
+import com.tkuhn.recipefinder.datasource.database.dao.RecipesDao
+import com.tkuhn.recipefinder.datasource.database.dto.DbRecipeDetail
 
 @Database(
-    entities = [DbForecast::class],
+    entities = [DbRecipeDetail::class],
     version = 1,
     exportSchema = false
 )
 //@TypeConverters(Converters::class)
 abstract class Db : RoomDatabase() {
 
-    abstract fun forecastDao(): ForecastDao
-
+    abstract fun recipesDao(): RecipesDao
 
     companion object {
 

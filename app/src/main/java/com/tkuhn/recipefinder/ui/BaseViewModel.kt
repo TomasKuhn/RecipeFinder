@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-
 open class BaseViewModel : ViewModel() {
 
     val snackMessage = LiveEvent<String>()
@@ -35,7 +34,7 @@ open class BaseViewModel : ViewModel() {
                         }
                         onSuccess?.invoke()
                     }
-                    is Resource.Error -> {
+                    is Resource.Error   -> {
                         val error = resource.error
                         Timber.d("Error because of $error")
                         if (!onBackground) {

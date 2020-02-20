@@ -3,7 +3,7 @@ package com.tkuhn.recipefinder.repository.mapper
 import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipe
 import com.tkuhn.recipefinder.domain.Recipe
 
-class RecipeMapper {
+object RecipeMapper {
 
     val networkToDomain = object : ModelMapper<NetworkRecipe, Recipe> {
 

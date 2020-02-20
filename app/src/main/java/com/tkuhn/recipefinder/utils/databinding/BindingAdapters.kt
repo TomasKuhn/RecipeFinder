@@ -54,19 +54,19 @@ fun TextInputLayout.setTextInputError(error: String?) {
 
 @BindingAdapter(value = ["items", "itemLayout", "scrollToBottom", "onItemClick"], requireAll = false)
 fun <T> RecyclerView.setRecyclerViewItems(
-        items: List<T>?,
-        @LayoutRes layoutId: Int,
-        scrollToBottom: Boolean = false,
-        onItemClick: ((T) -> Unit)?
+    items: List<T>?,
+    @LayoutRes layoutId: Int,
+    scrollToBottom: Boolean = false,
+    onItemClick: ((T) -> Unit)?
 ) {
     if (items != null) {
         var currentAdapter = (adapter as? BindingRecyclerAdapter<T, *>)
         if (currentAdapter == null) {
             currentAdapter = BindingRecyclerAdapter(
-                    layoutId,
-                    LayoutBinder(),
-                    context as? LifecycleOwner,
-                    onItemClick
+                layoutId,
+                LayoutBinder(),
+                context as? LifecycleOwner,
+                onItemClick
             )
             adapter = currentAdapter
         }
@@ -80,19 +80,19 @@ fun <T> RecyclerView.setRecyclerViewItems(
 
 @BindingAdapter(value = ["idItems", "itemLayout", "scrollToBottom", "onItemClick"], requireAll = false)
 fun <T : Identifiable> RecyclerView.setRecyclerViewIdItems(
-        items: List<T>?,
-        @LayoutRes layoutId: Int,
-        scrollToBottom: Boolean = false,
-        onItemClick: ((T) -> Unit)?
+    items: List<T>?,
+    @LayoutRes layoutId: Int,
+    scrollToBottom: Boolean = false,
+    onItemClick: ((T) -> Unit)?
 ) {
     if (items != null) {
         var currentAdapter = (adapter as? IdBindingRecyclerAdapter<T, *>)
         if (currentAdapter == null) {
             currentAdapter = IdBindingRecyclerAdapter(
-                    layoutId,
-                    LayoutBinder(),
-                    context as? LifecycleOwner,
-                    onItemClick
+                layoutId,
+                LayoutBinder(),
+                context as? LifecycleOwner,
+                onItemClick
             )
             adapter = currentAdapter
         }
