@@ -21,7 +21,7 @@ class RecipesRepo(
     private val db: Db
 ) {
 
-    private val recipeDetailRateLimit = RateLimiter<RecipeDetail>(10, TimeUnit.MINUTES)
+    private val recipeDetailValidator = ExpirationValidator<RecipeDetail>(10, TimeUnit.MINUTES)
 
     fun findRecipesBuNutrient(minCalories: Int, maxCalories: Int): Flow<Resource<List<Recipe>>> {
         return object : NetworkCall<List<NetworkRecipe>, List<Recipe>>() {
@@ -45,7 +45,7 @@ class RecipesRepo(
             }
 
             override fun shouldFetch(data: RecipeDetail?): Boolean {
-                return data == null || recipeDetailRateLimit.shouldFetch(data)
+                return data == null || recipeDetailValidator.shouldFetch(data)
             }
 
             override fun loadFlowFromDb(): Flow<RecipeDetail> {
