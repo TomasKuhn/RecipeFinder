@@ -1,5 +1,7 @@
 package com.tkuhn.recipefinder.datasource.network
 
+import com.tkuhn.recipefinder.R
+import com.tkuhn.recipefinder.utils.extensions.toText
 import timber.log.Timber
 import java.io.IOException
 import java.io.InterruptedIOException
@@ -19,11 +21,11 @@ sealed class ResourceError(
         fun networkError(exception: Throwable?): ResourceError {
             Timber.w(exception)
             return when (exception) {
-                is NoInternetException    -> NoInternetError("No internet connection")
+                is NoInternetException    -> NoInternetError(R.string.err_no_internet.toText())
                 is SocketTimeoutException,
-                is InterruptedIOException -> TimeoutError("Timeout error")
-                is IOException            -> IoError("Communication error")
-                else                      -> UnexpectedError("Something went wrong")
+                is InterruptedIOException -> TimeoutError(R.string.err_timeout.toText())
+                is IOException            -> IoError(R.string.err_io.toText())
+                else                      -> UnexpectedError(R.string.err_something_went_wrong.toText())
             }
         }
     }

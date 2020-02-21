@@ -3,10 +3,12 @@ package com.tkuhn.recipefinder.ui.main.search
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.map
+import com.tkuhn.recipefinder.R
 import com.tkuhn.recipefinder.domain.Recipe
 import com.tkuhn.recipefinder.repository.RecipesRepo
 import com.tkuhn.recipefinder.ui.BaseViewModel
 import com.tkuhn.recipefinder.utils.LiveEvent
+import com.tkuhn.recipefinder.utils.extensions.toText
 import com.tkuhn.recipefinder.utils.notNull
 import kotlin.contracts.ExperimentalContracts
 
@@ -37,7 +39,7 @@ class SearchViewModel(
                     recipes.value = it
                 })
             } else {
-                snackMessage.value = "Max must be greater then min"
+                snackMessage.value = R.string.search_min_max_condition.toText()
             }
         } else {
             snackMessage.value = "Fill min and max"

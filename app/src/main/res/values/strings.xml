@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">Recipe Finder</string>
+
+    <string name="basic_search">Search</string>
+    <string name="basic_recipes">Recipes</string>
+    <string name="var_calories">%d calories</string>
+    <string name="var_carbs">%s carbs</string>
+    <string name="var_protein">%s proteins</string>
+    <string name="var_fat">%s fat</string>
+
+    <string name="err_empty_field">Can\'t be empty</string>
+    <string name="err_no_internet">No internet connection</string>
+    <string name="err_timeout">The connection has timed out</string>
+    <string name="err_io">Communication error</string>
+    <string name="err_something_went_wrong">Something went wrong</string>
+
+    <string name="search_title">Find recipe</string>
+    <string name="search_max_calories">Max calories</string>
+    <string name="search_min_calories">Min calories</string>
+    <string name="search_min_max_condition">Max must be greater then min</string>
+    <string name="search_no_recipes_found">No recipes found</string>
 </resources>

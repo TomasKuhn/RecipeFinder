@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
-                app:title="Search" />
+                app:title="@string/search_title" />
 
             <LinearLayout
                 android:id="@+id/vSearch"
@@ -48,7 +48,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Min Calories"
+                        android:hint="@string/search_min_calories"
                         android:inputType="number"
                         android:text="@={vm.minCalories}"
                         tools:text="123123" />
@@ -63,7 +63,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Max Calories"
+                        android:hint="@string/search_max_calories"
                         android:inputType="number"
                         android:text="@={vm.maxCalories}" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -73,9 +73,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="10dp"
                     android:onClick="@{()->vm.search()}"
-                    android:text="@android:string/search_go" />
+                    android:text="@string/basic_search" />
             </LinearLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
-                    android:text="Recipes"
+                    android:text="@string/basic_recipes"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -118,15 +118,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:alpha="0.5"
-                    android:text="No recipes"
+                    android:text="@string/search_no_recipes_found"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/recyclerView" />
+                    app:layout_constraintTop_toTopOf="@+id/vRecyclerRecipes" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                    android:id="@+id/vRecyclerRecipes"
                     style="@style/Recycler"
                     idItems="@{vm.recipes}"
                     itemLayout="@{@layout/item_recipe}"

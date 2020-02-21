@@ -12,29 +12,57 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="?selectableItemBackground"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp">
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground">
 
         <TextView
             android:id="@+id/vTextRecipeName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:text="@{data.title}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="17sp"
+            android:maxLines="2"
+            app:layout_constraintBottom_toTopOf="@+id/vTextCalories"
             app:layout_constraintEnd_toStartOf="@+id/vImageRecipe"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@tools:sample/lorem" />
+            android:ellipsize="end"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Baked Apples in White Wine" />
+
+        <TextView
+            android:id="@+id/vTextCalories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginTop="2dp"
+            android:alpha="0.5"
+            app:layout_constraintBottom_toTopOf="@id/vTextNutrients"
+            app:layout_constraintStart_toStartOf="@+id/vTextRecipeName"
+            app:layout_constraintTop_toBottomOf="@+id/vTextRecipeName"
+            android:text="@{@string/var_calories(data.calories)}"
+            tools:text="210 calories" />
+
+        <TextView
+            android:id="@+id/vTextNutrients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:alpha="0.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/vTextRecipeName"
+            app:layout_constraintTop_toBottomOf="@+id/vTextCalories"
+            android:text="@{data.formattNutriends()}"
+            tools:text="20g protein 10g carbs 5g fat" />
 
         <ImageView
             android:id="@+id/vImageRecipe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
             imageSource="@{data.imageUrl}"
+            android:layout_width="110dp"
+            android:scaleType="centerCrop"
+            android:layout_height="90dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

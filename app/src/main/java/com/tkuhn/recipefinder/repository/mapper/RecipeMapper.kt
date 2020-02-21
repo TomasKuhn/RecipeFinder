@@ -10,7 +10,11 @@ object RecipeMapper {
             return Recipe(
                 id = input.id,
                 title = input.title,
-                imageUrl = input.image
+                imageUrl = input.image,
+                calories = input.calories,
+                carbs = input.carbs,
+                fat = input.fat,
+                protein = input.protein
             )
         }
     }
