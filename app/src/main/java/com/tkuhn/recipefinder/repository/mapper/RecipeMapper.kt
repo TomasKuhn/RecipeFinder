@@ -9,8 +9,9 @@ object RecipeMapper {
 
         override fun map(input: NetworkRecipe): Recipe {
             return Recipe(
-                input.id,
-                input.title
+                id = input.id,
+                title = input.title,
+                imageUrl = input.image
             )
         }
     }

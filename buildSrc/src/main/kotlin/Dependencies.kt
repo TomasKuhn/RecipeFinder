@@ -25,13 +25,13 @@ object Dependencies {
         val timber = "4.7.1"
         val databindingKtx = "2.0.2"
         val livedataExtensions = "1.3.0"
+        val coil = "0.9.5"
     }
 
     object BuildPlugins {
         val gradlePlugin = "com.android.tools.build:gradle:${Versions.gradlePlugin}"
         val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
-        val safeArgsPlugin =
-            "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
+        val safeArgsPlugin = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
     }
 
     object Libs {
@@ -48,27 +48,21 @@ object Dependencies {
         val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
         val roomKtx = "androidx.room:room-ktx:${Versions.room}"
         val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
-        val lifecycleViewModelKtx =
-            "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}" //viewModelScope
-        val lifecycleRuntimeKtx =
-            "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}" //lifeCycleScope
-        val lifecycleLiveDataKtx =
-            "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}" //livedata { ...}
-        val navigationFragmentKtx =
-            "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
+        val lifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}" //viewModelScope
+        val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}" //lifeCycleScope
+        val lifecycleLiveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}" //livedata { ...}
+        val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
         val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
 
         // Coroutines
         val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
-        val coroutinesAndroid =
-            "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
+        val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
 
         // Koin
         val koinViewModel = "org.koin:koin-androidx-viewmodel:${Versions.koin}"
 
         // Livedata extensions
-        val livedataExtensions =
-            "com.snakydesign.livedataextensions:lives:${Versions.livedataExtensions}"
+        val livedataExtensions = "com.snakydesign.livedataextensions:lives:${Versions.livedataExtensions}"
 
         // Networking
         val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
@@ -77,5 +71,8 @@ object Dependencies {
 
         // Logging
         val timber = "com.jakewharton.timber:timber:${Versions.timber}"
+
+        // Coil
+        val coil = "io.coil-kt:coil:${Versions.coil}"
     }
 }

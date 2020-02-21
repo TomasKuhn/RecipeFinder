@@ -83,6 +83,9 @@ dependencies {
 
     // Loggin
     implementation(Dependencies.Libs.timber)
+
+    // Coil
+    implementation(Dependencies.Libs.coil)
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {

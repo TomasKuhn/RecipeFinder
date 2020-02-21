@@ -3,6 +3,7 @@ package com.tkuhn.recipefinder.utils.databinding
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
+import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.core.view.forEach
 import androidx.core.widget.ContentLoadingProgressBar
@@ -10,10 +11,12 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
+import coil.transform.CircleCropTransformation
 import com.google.android.material.textfield.TextInputLayout
 import com.tkuhn.recipefinder.BR
 import com.tkuhn.recipefinder.utils.Identifiable
 import com.tkuhn.recipefinder.utils.extensions.scrollToBottom
+import com.tkuhn.recipefinder.utils.extensions.setImageSource
 
 @BindingAdapter("isVisible")
 fun View.setIsVisible(isVisible: Boolean) {
@@ -50,6 +53,15 @@ fun WebView.setWebViewUrl(url: String?) {
 @BindingAdapter("error")
 fun TextInputLayout.setTextInputError(error: String?) {
     this@setTextInputError.error = error
+}
+
+@BindingAdapter(value = ["imageSource", "placeHolder", "circleCrop"], requireAll = false)
+fun ImageView.setImageSource(data: Any?, placeHolder: Int?, circleCrop: Boolean = false) {
+    setImageSource(data, placeHolder) {
+        if (circleCrop) {
+            transformations(CircleCropTransformation())
+        }
+    }
 }
 
 @BindingAdapter(value = ["items", "itemLayout", "scrollToBottom", "onItemClick"], requireAll = false)
