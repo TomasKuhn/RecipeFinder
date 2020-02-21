@@ -21,7 +21,8 @@ object RecipeDetailMapper {
         override fun map(input: DbRecipeDetail): RecipeDetail {
             return RecipeDetail(
                 input.id,
-                input.title
+                input.title,
+                input.isValid()
             )
         }
     }

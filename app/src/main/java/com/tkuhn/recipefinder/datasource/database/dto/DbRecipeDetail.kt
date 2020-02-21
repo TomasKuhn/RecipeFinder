@@ -9,4 +9,4 @@ data class DbRecipeDetail(
     @PrimaryKey
     @ColumnInfo(name = "id") val id: Long,
     @ColumnInfo(name = "title") val title: String
-)
+) : DbBaseData(10)

@@ -14,14 +14,11 @@ import com.tkuhn.recipefinder.repository.mapper.RecipeMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import retrofit2.Response
-import java.util.concurrent.TimeUnit
 
 class RecipesRepo(
     private val service: RecipesService,
     private val db: Db
 ) {
-
-    private val recipeDetailValidator = ExpirationValidator<RecipeDetail>(10, TimeUnit.MINUTES)
 
     fun findRecipesBuNutrient(minCalories: Int, maxCalories: Int): Flow<Resource<List<Recipe>>> {
         return object : NetworkCall<List<NetworkRecipe>, List<Recipe>>() {
@@ -43,7 +40,7 @@ class RecipesRepo(
             }
 
             override fun shouldFetch(data: RecipeDetail?): Boolean {
-                return data == null || recipeDetailValidator.shouldFetch(data)
+                return data?.isValid != true
             }
 
             override fun loadFlowFromDb(): Flow<RecipeDetail> {
