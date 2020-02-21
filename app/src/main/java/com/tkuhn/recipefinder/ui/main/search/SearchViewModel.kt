@@ -19,6 +19,8 @@ class SearchViewModel(
 
     val minCalories = savedStateHandle.getLiveData<String>("minCalories")
     val maxCalories = savedStateHandle.getLiveData<String>("maxCalories")
+    val minCaloriesError = MutableLiveData<String>()
+    val maxCaloriesError = MutableLiveData<String>()
     val recipes = MutableLiveData<List<Recipe>>()
     val noRecipesFound = recipes.map { it?.isEmpty() == true }
     val onItemClick: (Recipe) -> Unit = {
@@ -32,6 +34,9 @@ class SearchViewModel(
         val min = minCalories.value?.toIntOrNull()
         val max = maxCalories.value?.toIntOrNull()
 
+        minCaloriesError.value = if (min == null) R.string.err_empty_field.toText() else null
+        maxCaloriesError.value = if (max == null) R.string.err_empty_field.toText() else null
+
         if (notNull(min, max)) {
             if (max > min) {
                 hideKeyboard()
@@ -41,8 +46,6 @@ class SearchViewModel(
             } else {
                 snackMessage.value = R.string.search_min_max_condition.toText()
             }
-        } else {
-            snackMessage.value = "Fill min and max"
         }
     }
 }

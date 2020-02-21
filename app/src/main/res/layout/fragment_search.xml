@@ -42,8 +42,10 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/vTilMinCalories"
+                    error="@{vm.minCaloriesError}"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -56,9 +58,10 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/vTilMaxCalories"
+                    error="@{vm.maxCaloriesError}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp">
+                    android:layout_marginTop="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -73,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="8dp"
                     android:onClick="@{()->vm.search()}"
                     android:text="@string/basic_search" />
             </LinearLayout>
