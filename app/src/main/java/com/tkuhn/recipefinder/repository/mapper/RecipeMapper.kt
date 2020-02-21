@@ -6,7 +6,6 @@ import com.tkuhn.recipefinder.domain.Recipe
 object RecipeMapper {
 
     val networkToDomain = object : ModelMapper<NetworkRecipe, Recipe> {
-
         override fun map(input: NetworkRecipe): Recipe {
             return Recipe(
                 id = input.id,
@@ -15,4 +14,5 @@ object RecipeMapper {
             )
         }
     }
+    val networkToDomainList = networkToDomain.toListMapper()
 }

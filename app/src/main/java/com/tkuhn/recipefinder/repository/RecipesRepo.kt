@@ -29,10 +29,8 @@ class RecipesRepo(
                 return service.findRecipesByNutrient(minCalories, maxCalories)
             }
 
-            override fun convertResponse(response: List<NetworkRecipe>): List<Recipe>? {
-                return response.map {
-                    RecipeMapper.networkToDomain.map(it)
-                }
+            override fun convertResponse(response: List<NetworkRecipe>): List<Recipe> {
+                return RecipeMapper.networkToDomainList.map(response)
             }
         }.execute()
     }
