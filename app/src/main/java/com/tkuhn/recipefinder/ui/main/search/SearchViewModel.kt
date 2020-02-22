@@ -40,12 +40,16 @@ class SearchViewModel(
         if (notNull(min, max)) {
             if (max > min) {
                 hideKeyboard()
-                load(recipesRepo.findRecipesBuNutrient(min, max), onData = {
+                load(recipesRepo.findRecipesBuNutrient(min, max), CALL_FIND_RECIPE, onData = {
                     recipes.value = it
                 })
             } else {
                 snackMessage.value = R.string.search_min_max_condition.toText()
             }
         }
+    }
+
+    companion object {
+        const val CALL_FIND_RECIPE = 1
     }
 }

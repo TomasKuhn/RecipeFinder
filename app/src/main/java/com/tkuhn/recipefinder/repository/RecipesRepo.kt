@@ -7,10 +7,13 @@ import com.tkuhn.recipefinder.datasource.network.RecipesService
 import com.tkuhn.recipefinder.datasource.network.Resource
 import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipe
 import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipeDetail
+import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipeSummary
 import com.tkuhn.recipefinder.domain.Recipe
 import com.tkuhn.recipefinder.domain.RecipeDetail
+import com.tkuhn.recipefinder.domain.RecipeSummary
 import com.tkuhn.recipefinder.repository.mapper.RecipeDetailMapper
 import com.tkuhn.recipefinder.repository.mapper.RecipeMapper
+import com.tkuhn.recipefinder.repository.mapper.RecipeSummaryMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import retrofit2.Response
@@ -57,6 +60,35 @@ class RecipesRepo(
 
             override suspend fun createCall(): Response<NetworkRecipeDetail> {
                 return service.getRecipeDetail(recipeId)
+            }
+        }.loadData()
+    }
+
+    fun getRecipeSummary(recipeId: Long): Flow<Resource<RecipeSummary>> {
+        return object : NetworkBoundResource<RecipeSummary, NetworkRecipeSummary>() {
+            override suspend fun saveCallResult(item: NetworkRecipeSummary) {
+                val dbRecipeSummary = RecipeSummaryMapper.networkToDb.map(item)
+                db.recipesDao().insertRecipeSummary(dbRecipeSummary)
+            }
+
+            override fun shouldFetch(data: RecipeSummary?): Boolean {
+                return data?.isValid != true
+            }
+
+            override fun loadFlowFromDb(): Flow<RecipeSummary> {
+                return db.recipesDao().getRecipeSummaryFlow(recipeId).map {
+                    RecipeSummaryMapper.dbToDomain.map(it)
+                }
+            }
+
+            override suspend fun loadFromDb(): RecipeSummary? {
+                return db.recipesDao().getRecipeSummary(recipeId)?.let { dto ->
+                    RecipeSummaryMapper.dbToDomain.map(dto)
+                }
+            }
+
+            override suspend fun createCall(): Response<NetworkRecipeSummary> {
+                return service.getRecipeSummary(recipeId)
             }
         }.loadData()
     }

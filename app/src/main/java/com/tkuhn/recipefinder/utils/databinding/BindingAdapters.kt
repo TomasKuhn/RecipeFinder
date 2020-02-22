@@ -4,7 +4,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.LayoutRes
+import androidx.core.text.HtmlCompat
 import androidx.core.view.forEach
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.databinding.BindingAdapter
@@ -53,6 +55,11 @@ fun WebView.setWebViewUrl(url: String?) {
 @BindingAdapter("error")
 fun TextInputLayout.setTextInputError(error: String?) {
     this@setTextInputError.error = error
+}
+
+@BindingAdapter("htmlText")
+fun TextView.setHtmlText(htmlText: String?) {
+    text = htmlText?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) }
 }
 
 @BindingAdapter(value = ["imageSource", "placeHolder", "circleCrop"], requireAll = false)

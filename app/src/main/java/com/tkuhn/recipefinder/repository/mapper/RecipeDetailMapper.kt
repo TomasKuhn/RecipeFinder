@@ -10,8 +10,14 @@ object RecipeDetailMapper {
 
         override fun map(input: NetworkRecipeDetail): DbRecipeDetail {
             return DbRecipeDetail(
-                input.id,
-                input.title
+                id = input.id,
+                title = input.title,
+                image = input.image,
+                readyInMinutes = input.readyInMinutes,
+                sourceUrl = input.sourceUrl,
+                likes = input.aggregateLikes,
+                healthScore = input.healthScore,
+                score = input.score
             )
         }
     }
@@ -20,9 +26,15 @@ object RecipeDetailMapper {
 
         override fun map(input: DbRecipeDetail): RecipeDetail {
             return RecipeDetail(
-                input.id,
-                input.title,
-                input.isValid()
+                id = input.id,
+                title = input.title,
+                image = input.image,
+                readyInMinutes = input.readyInMinutes,
+                sourceUrl = input.sourceUrl,
+                likes = input.likes,
+                healthScore = input.healthScore,
+                score = input.score,
+                isValid = input.isValid()
             )
         }
     }

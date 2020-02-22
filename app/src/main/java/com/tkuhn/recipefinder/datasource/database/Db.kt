@@ -7,9 +7,13 @@ import androidx.room.RoomDatabase
 import com.tkuhn.recipefinder.App
 import com.tkuhn.recipefinder.datasource.database.dao.RecipesDao
 import com.tkuhn.recipefinder.datasource.database.dto.DbRecipeDetail
+import com.tkuhn.recipefinder.datasource.database.dto.DbRecipeSummary
 
 @Database(
-    entities = [DbRecipeDetail::class],
+    entities = [
+        DbRecipeDetail::class,
+        DbRecipeSummary::class
+    ],
     version = 1,
     exportSchema = true
 )

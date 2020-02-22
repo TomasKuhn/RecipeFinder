@@ -11,14 +11,27 @@ class RecipeDetailViewModel(
 ) : BaseViewModel() {
 
     val recipeDetail = MutableLiveData<RecipeDetail>()
+    val recipeSummary = MutableLiveData<String>()
 
     init {
         loadRecipeDetail()
+        loadRecipeSummary()
     }
 
     private fun loadRecipeDetail() {
-        load(recipesRepo.getRecipeDetail(recipeId), onData = {
+        load(recipesRepo.getRecipeDetail(recipeId), CALL_DETAIL, onData = {
             recipeDetail.value = it
         })
+    }
+
+    private fun loadRecipeSummary() {
+        load(recipesRepo.getRecipeSummary(recipeId), CALL_SUMMARY, onData = {
+            recipeSummary.value = it.summary
+        })
+    }
+
+    companion object {
+        const val CALL_DETAIL = 1
+        const val CALL_SUMMARY = 1
     }
 }
