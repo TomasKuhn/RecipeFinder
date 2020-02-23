@@ -14,4 +14,15 @@
         <item name="layoutManager">androidx.recyclerview.widget.GridLayoutManager</item>
     </style>
 
+    <style name="Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:theme">@style/ToolbarTheme</item>
+        <item name="popupTheme">@style/ThemeOverlay.MaterialComponents.Light</item>
+    </style>
+
+    <style name="ExpandedTitleTA" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:textSize">22sp</item>
+    </style>
 </resources>

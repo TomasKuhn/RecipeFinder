@@ -22,9 +22,7 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/vToolbarList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                style="@style/Toolbar"
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
                 app:title="@string/search_title" />
 
