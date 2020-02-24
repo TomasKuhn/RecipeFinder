@@ -10,4 +10,4 @@ data class DbRecipeSummary(
     @ColumnInfo(name = "id") val id: Long,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "summary") val summary: String
-) : DbBaseData(10)
+) : DbBaseData(3600)

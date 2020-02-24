@@ -15,4 +15,4 @@ data class DbRecipeDetail(
     @ColumnInfo(name = "likes") val likes: Int,
     @ColumnInfo(name = "healthScore") val healthScore: Float,
     @ColumnInfo(name = "score") val score: Float
-) : DbBaseData(10)
+) : DbBaseData(3600)
