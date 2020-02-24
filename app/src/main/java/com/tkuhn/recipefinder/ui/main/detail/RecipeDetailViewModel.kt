@@ -1,7 +1,6 @@
 package com.tkuhn.recipefinder.ui.main.detail
 
 import androidx.lifecycle.MutableLiveData
-import com.tkuhn.recipefinder.domain.RecipeDetail
 import com.tkuhn.recipefinder.repository.RecipesRepo
 import com.tkuhn.recipefinder.ui.BaseViewModel
 
@@ -10,7 +9,7 @@ class RecipeDetailViewModel(
     private val recipesRepo: RecipesRepo
 ) : BaseViewModel() {
 
-    val recipeDetail = MutableLiveData<RecipeDetail>()
+    val recipeDetail = MutableLiveData<UiRecipeDetail>()
     val recipeSummary = MutableLiveData<String>()
 
     init {
@@ -20,7 +19,7 @@ class RecipeDetailViewModel(
 
     private fun loadRecipeDetail() {
         load(recipesRepo.getRecipeDetail(recipeId), CALL_DETAIL, onData = {
-            recipeDetail.value = it
+            recipeDetail.value = UiRecipeDetail.create(it)
         })
     }
 

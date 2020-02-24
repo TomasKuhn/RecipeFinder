@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.tkuhn.recipefinder.domain.Recipe" />
+            type="com.tkuhn.recipefinder.ui.main.search.UiRecipe" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,7 +42,7 @@
             app:layout_constraintBottom_toTopOf="@id/vTextNutrients"
             app:layout_constraintStart_toStartOf="@+id/vTextRecipeName"
             app:layout_constraintTop_toBottomOf="@+id/vTextRecipeName"
-            android:text="@{@string/var_calories(data.calories)}"
+            android:text="@{data.calories}"
             tools:text="210 calories" />
 
         <TextView
@@ -54,7 +54,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/vTextRecipeName"
             app:layout_constraintTop_toBottomOf="@+id/vTextCalories"
-            android:text="@{data.formattNutriends()}"
+            android:text="@{data.nutrients}"
             tools:text="20g protein 10g carbs 5g fat" />
 
         <ImageView

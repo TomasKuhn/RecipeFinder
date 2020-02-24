@@ -14,6 +14,86 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.core.widget.ContentLoadingProgressBar
+            style="@style/Widget.AppCompat.ProgressBar"
+            isLoading="@{vm.isLoading()}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/vTextDuration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:drawableEnd="@drawable/ic_time"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:text="@{vm.recipeDetail.duration}"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/vTextLikes"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="24m" />
+
+                <TextView
+                    android:id="@+id/vTextLikes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_thumb_up"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:text="@{vm.recipeDetail.likes}"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/vTextRating"
+                    app:layout_constraintStart_toEndOf="@+id/vTextDuration"
+                    app:layout_constraintTop_toTopOf="@+id/vTextDuration"
+                    tools:text="24m" />
+
+                <TextView
+                    android:id="@+id/vTextRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:drawableEnd="@drawable/ic_star"
+                    android:drawablePadding="2dp"
+                    android:text="@{vm.recipeDetail.score}"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/vTextLikes"
+                    app:layout_constraintTop_toTopOf="@+id/vTextLikes"
+                    tools:text="83" />
+
+                <TextView
+                    android:id="@+id/vTextSummary"
+                    htmlText="@{vm.recipeSummary}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/vTextDuration"
+                    tools:text="The recipe Soy-and-Ginger-Glazed Salmon with Udon Noodles can be made in approximately 1 hour and 35 minutes. One portion of this dish contains about 48g of protein, 17g of fat, and a total of 552 calories. This recipe serves 4. For $5.91 per serving, this recipe covers 47% of your daily requirements of vitamins and minerals. It works well as a main course. 1 person has tried and liked this recipe. It is brought to you by Food and Wine. If you have fresh ginger, udon noodles, salmon fillets, and a few other ingredients on hand, you can make it. It is a good option if you're following a dairy free and pescatarian diet. All things considered, we decided this recipe deserves a spoonacular score of 92%. This score is great. If you like this recipe, take a look at these similar recipes: Salmon With Soy-ginger Noodles, Ginger-Soy Salmon With Soba Noodles, and Soy &amp; ginger salmon with soba noodles." />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +108,7 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <ImageView
-                    imageSource="@{vm.recipeDetail.image}"
+                    imageSource="@{vm.recipeDetail.imageUrl}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
@@ -44,43 +124,12 @@
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/vToolbarRecipeDetail"
                     style="@style/Toolbar"
-                    app:layout_collapseMode="pin"
                     android:background="@android:color/transparent"
+                    app:layout_collapseMode="pin"
                     app:title="@{vm.recipeDetail.title}"
                     tools:title="Irish stew" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/vTextSummary"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    htmlText="@{vm.recipeSummary}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="The recipe Soy-and-Ginger-Glazed Salmon with Udon Noodles can be made in approximately 1 hour and 35 minutes. One portion of this dish contains about 48g of protein, 17g of fat, and a total of 552 calories. This recipe serves 4. For $5.91 per serving, this recipe covers 47% of your daily requirements of vitamins and minerals. It works well as a main course. 1 person has tried and liked this recipe. It is brought to you by Food and Wine. If you have fresh ginger, udon noodles, salmon fillets, and a few other ingredients on hand, you can make it. It is a good option if you're following a dairy free and pescatarian diet. All things considered, we decided this recipe deserves a spoonacular score of 92%. This score is great. If you like this recipe, take a look at these similar recipes: Salmon With Soy-ginger Noodles, Ginger-Soy Salmon With Soba Noodles, and Soy &amp; ginger salmon with soba noodles." />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
-
-        <androidx.core.widget.ContentLoadingProgressBar
-            style="@style/Widget.AppCompat.ProgressBar"
-            isLoading="@{vm.isLoading()}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
