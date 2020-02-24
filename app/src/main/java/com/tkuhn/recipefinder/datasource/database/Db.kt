@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.tkuhn.recipefinder.App
+import com.tkuhn.recipefinder.datasource.database.converter.DbConverters
 import com.tkuhn.recipefinder.datasource.database.dao.RecipesDao
 import com.tkuhn.recipefinder.datasource.database.dto.DbRecipeDetail
 import com.tkuhn.recipefinder.datasource.database.dto.DbRecipeSummary
@@ -17,7 +19,7 @@ import com.tkuhn.recipefinder.datasource.database.dto.DbRecipeSummary
     version = 1,
     exportSchema = true
 )
-//@TypeConverters(Converters::class)
+@TypeConverters(DbConverters::class)
 abstract class Db : RoomDatabase() {
 
     abstract fun recipesDao(): RecipesDao

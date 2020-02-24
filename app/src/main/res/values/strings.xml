@@ -19,4 +19,5 @@
     <string name="search_min_calories">Min calories</string>
     <string name="search_min_max_condition">Max must be greater then min</string>
     <string name="search_no_recipes_found">No recipes found</string>
+    <string name="basic.ingredients">Ingredients</string>
 </resources>

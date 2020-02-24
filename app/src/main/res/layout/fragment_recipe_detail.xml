@@ -22,7 +22,7 @@
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="256dp"
+                android:layout_height="200dp"
                 app:contentScrim="?attr/colorPrimary"
                 app:expandedTitleTextAppearance="@style/ExpandedTitleTA"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
@@ -54,9 +54,9 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:onRefreshListener="@{() -> vm.refresh()}"
-            app:refreshing="@{vm.isRefreshing()}"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:refreshing="@{vm.isRefreshing()}">
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedScrollView"
@@ -115,6 +115,35 @@
                         tools:text="83" />
 
                     <TextView
+                        android:id="@+id/vLabelIngredients"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginStart="20dp"
+                        android:text="@string/basic.ingredients"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/vTextDuration" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/vRecyclerIngredients"
+                        style="@style/Recycler"
+                        android:overScrollMode="never"
+                        itemLayout="@{@layout/item_ingredient}"
+                        items="@{vm.recipeDetail.ingredients}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/vLabelIngredients"
+                        tools:itemCount="4"
+                        tools:listitem="@layout/item_ingredient" />
+
+                    <TextView
                         android:id="@+id/vTextSummary"
                         htmlText="@{vm.recipeSummary}"
                         android:layout_width="0dp"
@@ -124,7 +153,7 @@
                         android:layout_marginEnd="20dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/vTextDuration"
+                        app:layout_constraintTop_toBottomOf="@id/vRecyclerIngredients"
                         tools:text="The recipe Soy-and-Ginger-Glazed Salmon with Udon Noodles can be made in approximately 1 hour and 35 minutes. One portion of this dish contains about 48g of protein, 17g of fat, and a total of 552 calories. This recipe serves 4. For $5.91 per serving, this recipe covers 47% of your daily requirements of vitamins and minerals. It works well as a main course. 1 person has tried and liked this recipe. It is brought to you by Food and Wine. If you have fresh ginger, udon noodles, salmon fillets, and a few other ingredients on hand, you can make it. It is a good option if you're following a dairy free and pescatarian diet. All things considered, we decided this recipe deserves a spoonacular score of 92%. This score is great. If you like this recipe, take a look at these similar recipes: Salmon With Soy-ginger Noodles, Ginger-Soy Salmon With Soba Noodles, and Soy &amp; ginger salmon with soba noodles." />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

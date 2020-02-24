@@ -39,8 +39,7 @@ object Dependencies {
         val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
         val coreKtx = "androidx.core:core-ktx:${Versions.coreKtx}"
         val material = "com.google.android.material:material:${Versions.material}"
-        val constraintLayout =
-            "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
+        val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
         val legacySupportV4 = "androidx.legacy:legacy-support-v4:${Versions.legacyV4}"
 
         // Databinding

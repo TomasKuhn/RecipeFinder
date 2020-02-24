@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4f71db9bcdac26c26d811625c44ef936",
+    "identityHash": "64043f6f1628ebe1fd444d745dad2a57",
     "entities": [
       {
         "tableName": "RecipeDetails",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `image` TEXT NOT NULL, `readyInMinutes` INTEGER NOT NULL, `sourceUrl` TEXT NOT NULL, `likes` INTEGER NOT NULL, `healthScore` REAL NOT NULL, `score` REAL NOT NULL, `timestamp` INTEGER NOT NULL, `validity` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `image` TEXT NOT NULL, `readyInMinutes` INTEGER NOT NULL, `sourceUrl` TEXT NOT NULL, `likes` INTEGER NOT NULL, `healthScore` REAL NOT NULL, `score` REAL NOT NULL, `ingredients` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `validity` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -54,6 +54,12 @@
             "fieldPath": "score",
             "columnName": "score",
             "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ingredients",
+            "columnName": "ingredients",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -126,7 +132,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4f71db9bcdac26c26d811625c44ef936')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '64043f6f1628ebe1fd444d745dad2a57')"
     ]
   }
 }

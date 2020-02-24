@@ -20,7 +20,7 @@ data class UiRecipeDetail(
                 likes = recipeDetail.likes.toString(),
                 score = String.format("%.0f", recipeDetail.score),
                 duration = "${recipeDetail.readyInMinutes} m",
-                ingredients = listOf("one ingredie", "asdfkj sa;lkdfj", " alskjfafa;skld")
+                ingredients = recipeDetail.ingredients
             )
         }
     }

@@ -17,7 +17,8 @@ object RecipeDetailMapper {
                 sourceUrl = input.sourceUrl,
                 likes = input.aggregateLikes,
                 healthScore = input.healthScore,
-                score = input.score
+                score = input.score,
+                ingredients = input.ingredients.map { it.original }
             )
         }
     }
@@ -34,6 +35,7 @@ object RecipeDetailMapper {
                 likes = input.likes,
                 healthScore = input.healthScore,
                 score = input.score,
+                ingredients = input.ingredients,
                 isValid = input.isValid()
             )
         }

@@ -14,5 +14,6 @@ data class DbRecipeDetail(
     @ColumnInfo(name = "sourceUrl") val sourceUrl: String,
     @ColumnInfo(name = "likes") val likes: Int,
     @ColumnInfo(name = "healthScore") val healthScore: Float,
-    @ColumnInfo(name = "score") val score: Float
+    @ColumnInfo(name = "score") val score: Float,
+    @ColumnInfo(name = "ingredients") val ingredients: List<String>
 ) : DbBaseData(3600)
