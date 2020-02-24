@@ -26,6 +26,7 @@ object Dependencies {
         val databindingKtx = "2.0.2"
         val livedataExtensions = "1.3.0"
         val coil = "0.9.5"
+        val legacyV4 = "1.0.0"
     }
 
     object BuildPlugins {
@@ -40,6 +41,7 @@ object Dependencies {
         val material = "com.google.android.material:material:${Versions.material}"
         val constraintLayout =
             "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
+        val legacySupportV4 = "androidx.legacy:legacy-support-v4:${Versions.legacyV4}"
 
         // Databinding
         val databinding = "com.github.wada811:DataBinding-ktx:${Versions.databindingKtx}"
@@ -48,8 +50,10 @@ object Dependencies {
         val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
         val roomKtx = "androidx.room:room-ktx:${Versions.room}"
         val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
-        val lifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}" //viewModelScope
-        val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}" //lifeCycleScope
+        val lifecycleViewModelKtx =
+            "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}" //viewModelScope
+        val lifecycleRuntimeKtx =
+            "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}" //lifeCycleScope
         val lifecycleLiveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}" //livedata { ...}
         val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
         val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"

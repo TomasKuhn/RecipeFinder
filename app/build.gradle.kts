@@ -58,6 +58,7 @@ dependencies {
 
     implementation(Dependencies.Libs.material)
     implementation(Dependencies.Libs.constraintLayout)
+    implementation(Dependencies.Libs.legacySupportV4)
 
     // Databinding
     implementation(Dependencies.Libs.databinding)

@@ -11,10 +11,25 @@ class RecipeDetailViewModel(
 
     val recipeDetail = MutableLiveData<UiRecipeDetail>()
     val recipeSummary = MutableLiveData<String>()
+    val isRefreshing = MutableLiveData<Boolean>()
 
     init {
         loadRecipeDetail()
         loadRecipeSummary()
+    }
+
+    fun refresh() {
+        recipesRepo.refreshRecipeDetail()?.let {
+            load(it, CALL_DETAIL, isRefreshing, onData = { data ->
+                recipeDetail.value = UiRecipeDetail.create(data)
+            })
+        }
+
+        recipesRepo.refreshRecipeSummary()?.let {
+            load(it, CALL_DETAIL, isRefreshing, onData = { data ->
+                recipeSummary.value = data.summary
+            })
+        }
     }
 
     private fun loadRecipeDetail() {
