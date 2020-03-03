@@ -10,7 +10,7 @@ object Dependencies {
     }
 
     object Versions {
-        val gradlePlugin = "4.0.0-alpha09"
+        val gradlePlugin = "4.0.0-beta01"
         val kotlin = "1.3.61"
         val material = "1.2.0-alpha04"
         val navigation = "2.3.0-alpha01"
