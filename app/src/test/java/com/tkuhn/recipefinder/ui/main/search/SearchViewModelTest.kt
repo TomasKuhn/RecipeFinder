@@ -1,16 +1,9 @@
 package com.tkuhn.recipefinder.ui.main.search
 
-import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import com.google.common.truth.Truth
-import com.tkuhn.recipefinder.BaseUnitTest
-import com.tkuhn.recipefinder.R
+import com.tkuhn.recipefinder.*
 import com.tkuhn.recipefinder.mock.RecipesRepoMock
-import com.tkuhn.recipefinder.utils.extensions.toText
-import io.mockk.every
-import io.mockk.mockkStatic
-import io.mockk.spyk
-import io.mockk.verify
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -71,12 +64,8 @@ internal class SearchViewModelTest : BaseUnitTest() {
     @DisplayName("Test min calories and max calories validation")
     fun search_validation_error() {
         // Given
-        mockkStatic("com.tkuhn.recipefinder.utils.extensions.ResourcesExtensionsKt")
-        every {
-            R.string.search_min_max_condition.toText()
-        } returns "Fake value"
-        val mockObserver = createMockObserver()
-        viewModel.snackMessage.observeForever(mockObserver)
+        R.string.search_min_max_condition.mockResource("Fake value")
+        val mockObserver = viewModel.snackMessage.mockObserver()
 
         // When
         viewModel.minCalories.value = 100.toString()
@@ -84,13 +73,9 @@ internal class SearchViewModelTest : BaseUnitTest() {
         viewModel.search()
 
         // Then
-        val list = mutableListOf<String>()
-        verify { mockObserver.onChanged(capture(list)) }
-
-        val errorMessage = list[0]
+        val values = mockObserver.getValues()
+        val errorMessage = values[0]
         Truth.assertThat(errorMessage).isNotNull()
     }
-
-    private fun createMockObserver(): Observer<String> = spyk(Observer { })
 
 }

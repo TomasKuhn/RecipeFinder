@@ -1,43 +1,28 @@
 package com.tkuhn.recipefinder
 
-import android.content.Context
-import android.graphics.drawable.Drawable
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.TimeoutException
+import com.tkuhn.recipefinder.utils.extensions.toText
+import io.mockk.every
+import io.mockk.mockkStatic
+import io.mockk.spyk
+import io.mockk.verify
 
-fun Int.toText(context: Context): String = context.getString(this)
-
-fun Int.toText(context: Context, vararg formatArgs: Any): String = context.getString(this, *formatArgs)
-
-fun Int.toDrawable(context: Context): Drawable? {
-    return ContextCompat.getDrawable(context, this)
+inline fun <reified T : Any> LiveData<T>.mockObserver(): Observer<T> {
+    val mockObserver: Observer<T> = spyk(Observer { })
+    observeForever(mockObserver)
+    return mockObserver
 }
 
-fun <T> LiveData<T>.getOrAwaitValue(
-    time: Long = 2,
-    timeUnit: TimeUnit = TimeUnit.SECONDS
-): T {
-    var data: T? = null
-    val latch = CountDownLatch(1)
-    val observer = object : Observer<T> {
-        override fun onChanged(o: T?) {
-            data = o
-            latch.countDown()
-            this@getOrAwaitValue.removeObserver(this)
-        }
-    }
+inline fun <reified T : Any> Observer<T>.getValues(): List<T> {
+    val results = mutableListOf<T>()
+    verify { this@getValues.onChanged(capture(results)) }
+    return results.toList()
+}
 
-    this.observeForever(observer)
-
-    // Don't wait indefinitely if the LiveData is not set.
-    if (!latch.await(time, timeUnit)) {
-        throw TimeoutException("LiveData value was never set.")
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    return data as T
+fun Int.mockResource(mockValue: String) {
+    mockkStatic("com.tkuhn.recipefinder.utils.extensions.ResourcesExtensionsKt")
+    every {
+        toText()
+    } returns mockValue
 }

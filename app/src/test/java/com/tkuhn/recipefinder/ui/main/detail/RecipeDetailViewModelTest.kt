@@ -2,8 +2,9 @@ package com.tkuhn.recipefinder.ui.main.detail
 
 import com.google.common.truth.Truth
 import com.tkuhn.recipefinder.BaseUnitTest
-import com.tkuhn.recipefinder.getOrAwaitValue
+import com.tkuhn.recipefinder.getValues
 import com.tkuhn.recipefinder.mock.RecipesRepoMock
+import com.tkuhn.recipefinder.mockObserver
 import org.junit.jupiter.api.Test
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.inject
@@ -20,9 +21,13 @@ internal class RecipeDetailViewModelTest : BaseUnitTest() {
 
     @Test
     fun searchMinMaxException() {
+        // Given
         val uiRecipe = UiRecipeDetail.create(RecipesRepoMock.mockRecipe)
-        val recipeDetail = viewModel.recipeDetail.getOrAwaitValue()
-        Truth.assertThat(recipeDetail).isEqualTo(uiRecipe)
+        val mockObserver = viewModel.recipeDetail.mockObserver()
+
+        // Then
+        val values = mockObserver.getValues()
+        Truth.assertThat(values[0]).isEqualTo(uiRecipe)
     }
 
     @Test
