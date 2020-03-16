@@ -1,6 +1,8 @@
 package com.tkuhn.recipefinder
 
 import io.mockk.MockKAnnotations
+import io.mockk.clearAllMocks
+import io.mockk.clearStaticMockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -25,30 +27,28 @@ abstract class BaseUnitTest : KoinTest {
     @ObsoleteCoroutinesApi
     private val mainThreadDispatcher = newSingleThreadContext("UI thread")
 
-    @BeforeAll
-    fun initKoinModules() {
-        MockKAnnotations.init(this)
-        startKoin {
-            modules(testingModules)
-        }
-    }
-
-    @AfterAll
-    fun clearKoin() {
-        stopKoin()
-    }
-
     @ObsoleteCoroutinesApi
     @ExperimentalCoroutinesApi
     @BeforeAll
-    fun setupMainThreadDispatcher() {
+    fun beforeAll() {
+        MockKAnnotations.init(this)
+
+        startKoin {
+            modules(testingModules)
+        }
+
         Dispatchers.setMain(mainThreadDispatcher)
     }
 
     @ObsoleteCoroutinesApi
     @ExperimentalCoroutinesApi
     @AfterAll
-    fun resetDispatchers() {
+    fun afterAll() {
+        clearAllMocks()
+        clearStaticMockk()
+
+        stopKoin()
+
         Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
         mainThreadDispatcher.close()
     }

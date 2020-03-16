@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import com.google.common.truth.Truth
 import com.tkuhn.recipefinder.*
 import com.tkuhn.recipefinder.mock.RecipesRepoMock
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.inject
@@ -61,10 +60,9 @@ internal class SearchViewModelTest : BaseUnitTest() {
     }
 
     @Test
-    @DisplayName("Test min calories and max calories validation")
-    fun search_validation_error() {
+    fun search_error_maxIsLowerThanMin() {
         // Given
-        R.string.search_min_max_condition.mockResource("Fake value")
+        R.string.search_min_max_condition.mockResource("Max must be greater then min")
         val mockObserver = viewModel.snackMessage.mockObserver()
 
         // When
