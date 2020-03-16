@@ -96,13 +96,10 @@ dependencies {
 
     // Tests
     testImplementation(Dependencies.Libs.junitJupiter)
-    testImplementation("org.koin:koin-test:2.1.0-beta-1")
-    testImplementation("org.mockito:mockito-core:3.1.0")
-    testImplementation("org.mockito:mockito-inline:3.1.0")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.2")
+    testImplementation("org.koin:koin-test:2.1.1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.4")
     testImplementation("com.google.truth:truth:1.0.1")
-    //    testImplementation("android.arch.core:core-testing:2.1.0")
+    testImplementation("io.mockk:mockk:1.9.3")
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
