@@ -22,7 +22,7 @@ internal class RecipeDetailViewModelTest : BaseUnitTest() {
     @Test
     fun searchMinMaxException() {
         // Given
-        val uiRecipe = UiRecipeDetail.create(RecipesRepoMock.mockRecipe)
+        val uiRecipe = UiRecipeDetail.create(RecipesRepoMock.mockRecipeDetail)
         val mockObserver = viewModel.recipeDetail.mockObserver()
 
         // Then

@@ -3,6 +3,7 @@ package com.tkuhn.recipefinder
 import io.mockk.MockKAnnotations
 import io.mockk.clearAllMocks
 import io.mockk.clearStaticMockk
+import io.mockk.mockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -51,5 +52,9 @@ abstract class BaseUnitTest : KoinTest {
 
         Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
         mainThreadDispatcher.close()
+    }
+
+    protected fun mockResources() {
+        mockkStatic("com.tkuhn.recipefinder.utils.extensions.ResourcesExtensionsKt")
     }
 }

@@ -13,7 +13,16 @@ import kotlinx.coroutines.flow.flow
 object RecipesRepoMock {
 
     val recipeId = 1L
-    val mockRecipe = RecipeDetail(
+    val mockRecipe = Recipe(
+        recipeId,
+        "title",
+        "",
+        123,
+        "12",
+        "12",
+        "33f"
+    )
+    val mockRecipeDetail = RecipeDetail(
         recipeId,
         "title",
         "",
@@ -30,22 +39,26 @@ object RecipesRepoMock {
         "summary",
         true
     )
-    val successResourceRecipe = Resource.Success(mockRecipe)
     val errorResourceRecipe = Resource.Error<Recipe>(ResourceError.UnexpectedError("error"))
-    val successResourceRecipeSummary = Resource.Success(mockRecipeSummary)
     val errorResourceRecipeSummary = Resource.Error<Recipe>(ResourceError.UnexpectedError("error"))
 
     val mock = mockk<RecipesRepo> {
         every {
             getRecipeDetail(recipeId)
         } returns flow {
-            emit(successResourceRecipe)
+            emit(Resource.Success(mockRecipeDetail))
         }
 
         every {
             getRecipeSummary(recipeId)
         } returns flow {
-            emit(successResourceRecipeSummary)
+            emit(Resource.Success(mockRecipeSummary))
+        }
+
+        every {
+            findRecipesBuNutrient(any(), any())
+        } returns flow {
+            emit(Resource.Success(listOf(mockRecipe)))
         }
     }
 }
