@@ -4,12 +4,16 @@ import androidx.lifecycle.SavedStateHandle
 import com.google.common.truth.Truth
 import com.tkuhn.recipefinder.BaseUnitTest
 import com.tkuhn.recipefinder.R
+import com.tkuhn.recipefinder.datasource.network.Resource
+import com.tkuhn.recipefinder.datasource.network.ResourceError
+import com.tkuhn.recipefinder.domain.Recipe
 import com.tkuhn.recipefinder.getValues
 import com.tkuhn.recipefinder.mock.RecipesRepoMock
 import com.tkuhn.recipefinder.mockObserver
 import com.tkuhn.recipefinder.utils.extensions.toText
 import io.mockk.every
 import io.mockk.verify
+import kotlinx.coroutines.flow.flow
 import org.junit.jupiter.api.Test
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.inject
@@ -58,6 +62,30 @@ internal class SearchViewModelTest : BaseUnitTest() {
         // Then
         val snackMessage = snackMessageObserver.getValues()[0]
         Truth.assertThat(snackMessage).isEqualTo(errorMessage)
+    }
+
+    @Test
+    fun search_error_setErrorMessage() {
+        // Given
+        val errorMessage = "Unexpected error"
+        val snackMessageObserver = viewModel.snackMessage.mockObserver()
+        every {
+            recipesRepo.findRecipesBuNutrient(any(), any())
+        } returns flow {
+            emit(Resource.Error<List<Recipe>>(ResourceError.UnexpectedError(errorMessage)))
+        }
+
+        // When
+        val min = 10
+        val max = 100
+        viewModel.minCalories.value = min.toString()
+        viewModel.maxCalories.value = max.toString()
+        viewModel.search()
+
+        // Then
+        val snackMessage = snackMessageObserver.getValues()[0]
+        Truth.assertThat(snackMessage).isEqualTo(errorMessage)
+        verify { recipesRepo.findRecipesBuNutrient(min, max) }
     }
 
     @Test

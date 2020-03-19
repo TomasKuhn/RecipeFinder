@@ -45,7 +45,7 @@ internal class RecipeDetailViewModelTest : BaseUnitTest() {
     }
 
     @Test
-    fun isRefreshing() {
+    fun isRefreshing_success_changed() {
         // Given
         val isRefreshingObserver = viewModel.isRefreshing.mockObserver()
 
