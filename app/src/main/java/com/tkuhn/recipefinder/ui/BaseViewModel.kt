@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.tkuhn.recipefinder.datasource.network.Resource
 import com.tkuhn.recipefinder.datasource.network.ResourceError
 import com.tkuhn.recipefinder.utils.LiveEvent
+import com.tkuhn.recipefinder.utils.extensions.setDistinctValue
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -68,13 +69,13 @@ open class BaseViewModel : ViewModel() {
     ) {
         if (isInProgress) {
             loadDataIds.getOrPut(loading, { mutableSetOf() }).add(id)
-            loading.value = true
+            loading.setDistinctValue(true)
         } else {
             loadDataIds[loading]?.let {
                 it.remove(id)
                 if (it.isEmpty()) {
                     loadDataIds.remove(loading)
-                    loading.value = false
+                    loading.setDistinctValue(false)
                 }
             }
         }

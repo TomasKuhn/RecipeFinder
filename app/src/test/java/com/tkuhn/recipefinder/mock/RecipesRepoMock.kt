@@ -8,6 +8,7 @@ import com.tkuhn.recipefinder.domain.RecipeSummary
 import com.tkuhn.recipefinder.repository.RecipesRepo
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 
 object RecipesRepoMock {
@@ -31,7 +32,7 @@ object RecipesRepoMock {
         12,
         33f,
         3f,
-        listOf("Flavor", "Meat"),
+        emptyList(),
         true
     )
     val mockRecipeSummary = RecipeSummary(
@@ -46,19 +47,41 @@ object RecipesRepoMock {
         every {
             getRecipeDetail(recipeId)
         } returns flow {
+            emit(Resource.Loading())
+            delay(200)
             emit(Resource.Success(mockRecipeDetail))
         }
 
         every {
             getRecipeSummary(recipeId)
         } returns flow {
+            emit(Resource.Loading())
+            delay(200)
             emit(Resource.Success(mockRecipeSummary))
         }
 
         every {
             findRecipesBuNutrient(any(), any())
         } returns flow {
+            emit(Resource.Loading())
+            delay(200)
             emit(Resource.Success(listOf(mockRecipe)))
+        }
+
+        every {
+            refreshRecipeDetail()
+        } returns flow {
+            emit(Resource.Loading())
+            delay(400)
+            emit(Resource.Success(mockRecipeDetail))
+        }
+
+        every {
+            refreshRecipeSummary()
+        } returns flow {
+            emit(Resource.Loading())
+            delay(200)
+            emit(Resource.Success(mockRecipeSummary))
         }
     }
 }

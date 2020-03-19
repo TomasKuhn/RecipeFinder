@@ -131,6 +131,7 @@
                     style="@style/Recycler"
                     idItems="@{vm.recipes}"
                     itemLayout="@{@layout/item_recipe}"
+                    itemMapper="@{vm.recipeMapper}"
                     onItemClick="@{vm.onItemClick}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

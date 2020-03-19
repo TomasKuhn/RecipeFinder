@@ -2,6 +2,7 @@ package com.tkuhn.recipefinder.repository.mapper
 
 import com.tkuhn.recipefinder.datasource.database.dto.DbRecipeDetail
 import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipeDetail
+import com.tkuhn.recipefinder.domain.Ingredient
 import com.tkuhn.recipefinder.domain.RecipeDetail
 
 object RecipeDetailMapper {
@@ -18,7 +19,13 @@ object RecipeDetailMapper {
                 likes = input.aggregateLikes,
                 healthScore = input.healthScore,
                 score = input.score,
-                ingredients = input.ingredients.map { it.original }
+                ingredients = input.ingredients.map {
+                    Ingredient(
+                        id = it.id,
+                        name = it.original,
+                        imageUrl = it.image
+                    )
+                }
             )
         }
     }

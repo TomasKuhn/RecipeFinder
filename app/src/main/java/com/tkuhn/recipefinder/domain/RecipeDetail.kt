@@ -11,6 +11,6 @@ data class RecipeDetail(
     val likes: Int,
     val healthScore: Float,
     val score: Float,
-    val ingredients: List<String>,
+    val ingredients: List<Ingredient>,
     val isValid: Boolean
 ) : Identifiable

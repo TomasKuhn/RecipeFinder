@@ -5,6 +5,7 @@ import com.tkuhn.recipefinder.BaseUnitTest
 import com.tkuhn.recipefinder.getValues
 import com.tkuhn.recipefinder.mock.RecipesRepoMock
 import com.tkuhn.recipefinder.mockObserver
+import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.inject
@@ -13,36 +14,49 @@ import org.koin.dsl.module
 internal class RecipeDetailViewModelTest : BaseUnitTest() {
 
     override val testingModules = module {
-        viewModel { RecipeDetailViewModel(RecipesRepoMock.recipeId, recipesRepo) }
+        viewModel { RecipeDetailViewModel(recipeId, recipesRepo) }
     }
-
-    private val recipesRepo = RecipesRepoMock.mock
+    private val recipeId = RecipesRepoMock.recipeId
+    private var recipesRepo = RecipesRepoMock.mock
     private val viewModel: RecipeDetailViewModel by inject()
 
     @Test
-    fun searchMinMaxException() {
+    fun recipeDetail_success_recipeDetailDownloaded() {
         // Given
         val uiRecipe = UiRecipeDetail.create(RecipesRepoMock.mockRecipeDetail)
-        val mockObserver = viewModel.recipeDetail.mockObserver()
+        val recipeDetailObserver = viewModel.uiRecipeDetail.mockObserver()
 
         // Then
-        val values = mockObserver.getValues()
+        val values = recipeDetailObserver.getValues(timeout = 300)
         Truth.assertThat(values[0]).isEqualTo(uiRecipe)
+        verify { recipesRepo.getRecipeDetail(recipeId) }
     }
 
     @Test
-    fun getRecipeDetail() {
-    }
+    fun recipeSummary_success_recipeSummaryDownloaded() {
+        // Given
+        val recipeSummary = RecipesRepoMock.mockRecipeSummary
+        val summaryObserver = viewModel.recipeSummary.mockObserver()
 
-    @Test
-    fun getRecipeSummary() {
+        // Then
+        val values = summaryObserver.getValues(timeout = 300)
+        Truth.assertThat(values[0]).isEqualTo(recipeSummary.summary)
+        verify { recipesRepo.getRecipeSummary(recipeId) }
     }
 
     @Test
     fun isRefreshing() {
-    }
+        // Given
+        val isRefreshingObserver = viewModel.isRefreshing.mockObserver()
 
-    @Test
-    fun refresh() {
+        // When
+        viewModel.refresh()
+
+        // Then
+        val values = isRefreshingObserver.getValues(timeout = 1000, exactly = 2)
+        Truth.assertThat(values.first()).isTrue()
+        Truth.assertThat(values.last()).isFalse()
+        verify { recipesRepo.refreshRecipeDetail() }
+        verify { recipesRepo.refreshRecipeSummary() }
     }
 }
