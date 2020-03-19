@@ -6,7 +6,7 @@ import com.tkuhn.recipefinder.getValues
 import com.tkuhn.recipefinder.mock.RecipesRepoMock
 import com.tkuhn.recipefinder.mockObserver
 import io.mockk.verify
-import org.junit.jupiter.api.Test
+import org.junit.Test
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.inject
 import org.koin.dsl.module

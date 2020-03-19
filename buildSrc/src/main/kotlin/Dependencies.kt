@@ -27,13 +27,15 @@ object Dependencies {
         val livedataExtensions = "1.3.0"
         val coil = "0.9.5"
         val legacyV4 = "1.0.0"
-        val junitJupiter = "5.5.2"
+        val junit = "4.13"
+        val junitExt = "1.1.1"
         val koinTest = "2.1.1"
         val coroutinesTest = "1.3.4"
         val truth = "1.0.1"
         val mockk = "1.9.3"
         val archCoreTest = "2.1.0"
-        val espresso = "3.1.0"
+        val espresso = "3.3.0-alpha05"
+        val fragmentTest = "1.2.3"
     }
 
     object BuildPlugins {
@@ -84,12 +86,14 @@ object Dependencies {
         val coil = "io.coil-kt:coil:${Versions.coil}"
 
         // Tests
-        val junitJupiter = "org.junit.jupiter:junit-jupiter:${Versions.junitJupiter}"
+        val junit = "junit:junit:${Versions.junit}"
+        val junitExt = "androidx.test.ext:junit:${Versions.junitExt}"
         val koinTest = "org.koin:koin-test:${Versions.koinTest}"
         val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutinesTest}"
         val truth = "com.google.truth:truth:${Versions.truth}"
         val mockk = "io.mockk:mockk:${Versions.mockk}"
         val archCoreTest = "androidx.arch.core:core-testing:${Versions.archCoreTest}"
         val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
+        val fragmentTest = "androidx.fragment:fragment-testing:${Versions.fragmentTest}"
     }
 }

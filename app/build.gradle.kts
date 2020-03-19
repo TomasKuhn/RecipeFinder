@@ -95,13 +95,17 @@ dependencies {
     implementation(Dependencies.Libs.coil)
 
     // Tests
-    testImplementation(Dependencies.Libs.junitJupiter)
+    testImplementation(Dependencies.Libs.junit)
     testImplementation(Dependencies.Libs.koinTest)
     testImplementation(Dependencies.Libs.coroutinesTest)
     testImplementation(Dependencies.Libs.truth)
     testImplementation(Dependencies.Libs.mockk)
     testImplementation(Dependencies.Libs.archCoreTest)
-    testImplementation(Dependencies.Libs.espresso)
+    androidTestImplementation(Dependencies.Libs.junitExt)
+    androidTestImplementation(Dependencies.Libs.espresso)
+    debugImplementation(Dependencies.Libs.fragmentTest) {
+        exclude(group = "androidx.test", module = "core")
+    }
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {

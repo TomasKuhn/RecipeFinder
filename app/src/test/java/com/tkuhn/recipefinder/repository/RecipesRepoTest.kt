@@ -1,40 +1,36 @@
 package com.tkuhn.recipefinder.repository
 
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
 
-@DisplayName("Recipes repository tests")
 internal class RecipesRepoTest {
 
-    @Test
-    fun findRecipesBuNutrient() {
-    }
-
-    @Nested
-    @DisplayName("Recipe detail tests")
-    inner class RecipeDetail {
-        @Test
-        fun getRecipeDetail() {
-        }
-
-        @Test
-        fun refreshRecipeDetail() {
-        }
-    }
-
-    @Nested
-    @DisplayName("Recipe summary tests")
-    inner class RecipeSummary {
-
-        @Test
-        fun getRecipeSummary() {
-        }
-
-        @Test
-        fun refreshRecipeSummary() {
-        }
-    }
+    //    @Test
+    //    fun findRecipesBuNutrient() {
+    //    }
+    //
+    //    @Nested
+    //    @DisplayName("Recipe detail tests")
+    //    inner class RecipeDetail {
+    //        @Test
+    //        fun getRecipeDetail() {
+    //        }
+    //
+    //        @Test
+    //        fun refreshRecipeDetail() {
+    //        }
+    //    }
+    //
+    //    @Nested
+    //    @DisplayName("Recipe summary tests")
+    //    inner class RecipeSummary {
+    //
+    //        @Test
+    //        fun getRecipeSummary() {
+    //        }
+    //
+    //        @Test
+    //        fun refreshRecipeSummary() {
+    //        }
+    //    }
 
     //1. If recipe is not in cache, remote is called
 

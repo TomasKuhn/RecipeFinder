@@ -14,7 +14,7 @@ import com.tkuhn.recipefinder.utils.extensions.toText
 import io.mockk.every
 import io.mockk.verify
 import kotlinx.coroutines.flow.flow
-import org.junit.jupiter.api.Test
+import org.junit.Test
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.inject
 import org.koin.dsl.module
