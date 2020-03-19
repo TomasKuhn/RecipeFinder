@@ -71,25 +71,28 @@ fun ImageView.setImageSource(data: Any?, placeHolder: Int?, circleCrop: Boolean 
     }
 }
 
-@BindingAdapter(value = ["items", "itemLayout", "scrollToBottom", "onItemClick"], requireAll = false)
-fun <T> RecyclerView.setRecyclerViewItems(
-    items: List<T>?,
+@BindingAdapter(value = ["items", "itemMapper", "itemLayout", "scrollToBottom", "onItemClick"], requireAll = false)
+fun <ITEM, VIEW> RecyclerView.setRecyclerViewItems(
+    items: List<ITEM>?,
+    itemMapper: (ITEM) -> VIEW,
     @LayoutRes layoutId: Int,
     scrollToBottom: Boolean = false,
-    onItemClick: ((T) -> Unit)?
+    onItemClick: ((ITEM) -> Unit)?
 ) {
     if (items != null) {
-        var currentAdapter = (adapter as? BindingRecyclerAdapter<T, *>)
+        var currentAdapter = (adapter as? BindingRecyclerAdapter<VIEW, *>)
         if (currentAdapter == null) {
             currentAdapter = BindingRecyclerAdapter(
                 layoutId,
                 LayoutBinder(),
-                context as? LifecycleOwner,
-                onItemClick
-            )
+                context as? LifecycleOwner
+            ) { pos ->
+                onItemClick?.invoke(items[pos])
+            }
             adapter = currentAdapter
         }
-        currentAdapter.setItems(items)
+        val viewItems = items.map { itemMapper(it) }
+        currentAdapter.setItems(viewItems)
 
         if (scrollToBottom) {
             scrollToBottom()
@@ -97,25 +100,28 @@ fun <T> RecyclerView.setRecyclerViewItems(
     }
 }
 
-@BindingAdapter(value = ["idItems", "itemLayout", "scrollToBottom", "onItemClick"], requireAll = false)
-fun <T : Identifiable> RecyclerView.setRecyclerViewIdItems(
-    items: List<T>?,
+@BindingAdapter(value = ["idItems", "itemMapper", "itemLayout", "scrollToBottom", "onItemClick"], requireAll = false)
+fun <ITEM, VIEW : Identifiable> RecyclerView.setRecyclerViewIdItems(
+    items: List<ITEM>?,
+    itemMapper: (ITEM) -> VIEW,
     @LayoutRes layoutId: Int,
     scrollToBottom: Boolean = false,
-    onItemClick: ((T) -> Unit)?
+    onItemClick: ((ITEM) -> Unit)?
 ) {
     if (items != null) {
-        var currentAdapter = (adapter as? IdBindingRecyclerAdapter<T, *>)
+        var currentAdapter = (adapter as? IdBindingRecyclerAdapter<VIEW, *>)
         if (currentAdapter == null) {
             currentAdapter = IdBindingRecyclerAdapter(
                 layoutId,
                 LayoutBinder(),
-                context as? LifecycleOwner,
-                onItemClick
-            )
+                context as? LifecycleOwner
+            ) { pos ->
+                onItemClick?.invoke(items[pos])
+            }
             adapter = currentAdapter
         }
-        currentAdapter.setItems(items)
+        val viewItems = items.map { itemMapper(it) }
+        currentAdapter.setItems(viewItems)
 
         if (scrollToBottom) {
             scrollToBottom()

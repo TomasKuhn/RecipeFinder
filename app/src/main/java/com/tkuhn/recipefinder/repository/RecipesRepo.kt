@@ -23,10 +23,8 @@ class RecipesRepo(
     private val db: Db
 ) {
 
-    private var recipeDetailResource: NetworkBoundResource<RecipeDetail, NetworkRecipeDetail>? =
-        null
-    private var recipeSummaryResource: NetworkBoundResource<RecipeSummary, NetworkRecipeSummary>? =
-        null
+    private var recipeDetailResource: NetworkBoundResource<RecipeDetail, NetworkRecipeDetail>? = null
+    private var recipeSummaryResource: NetworkBoundResource<RecipeSummary, NetworkRecipeSummary>? = null
 
     fun findRecipesBuNutrient(minCalories: Int, maxCalories: Int): Flow<Resource<List<Recipe>>> {
         return object : NetworkCall<List<NetworkRecipe>, List<Recipe>>() {
@@ -75,33 +73,32 @@ class RecipesRepo(
     }
 
     fun getRecipeSummary(recipeId: Long): Flow<Resource<RecipeSummary>> {
-        recipeSummaryResource =
-            object : NetworkBoundResource<RecipeSummary, NetworkRecipeSummary>() {
-                override suspend fun saveCallResult(item: NetworkRecipeSummary) {
-                    val dbRecipeSummary = RecipeSummaryMapper.networkToDb.map(item)
-                    db.recipesDao().insertRecipeSummary(dbRecipeSummary)
-                }
+        recipeSummaryResource = object : NetworkBoundResource<RecipeSummary, NetworkRecipeSummary>() {
+            override suspend fun saveCallResult(item: NetworkRecipeSummary) {
+                val dbRecipeSummary = RecipeSummaryMapper.networkToDb.map(item)
+                db.recipesDao().insertRecipeSummary(dbRecipeSummary)
+            }
 
-                override fun shouldFetch(data: RecipeSummary?): Boolean {
-                    return data?.isValid != true
-                }
+            override fun shouldFetch(data: RecipeSummary?): Boolean {
+                return data?.isValid != true
+            }
 
-                override fun loadFlowFromDb(): Flow<RecipeSummary> {
+            override fun loadFlowFromDb(): Flow<RecipeSummary> {
                 return db.recipesDao().getRecipeSummaryFlow(recipeId).map {
                     RecipeSummaryMapper.dbToDomain.map(it)
                 }
             }
 
-                override suspend fun loadFromDb(): RecipeSummary? {
-                    return db.recipesDao().getRecipeSummary(recipeId)?.let { dto ->
-                        RecipeSummaryMapper.dbToDomain.map(dto)
-                    }
-                }
-
-                override suspend fun createCall(): Response<NetworkRecipeSummary> {
-                    return service.getRecipeSummary(recipeId)
+            override suspend fun loadFromDb(): RecipeSummary? {
+                return db.recipesDao().getRecipeSummary(recipeId)?.let { dto ->
+                    RecipeSummaryMapper.dbToDomain.map(dto)
                 }
             }
+
+            override suspend fun createCall(): Response<NetworkRecipeSummary> {
+                return service.getRecipeSummary(recipeId)
+            }
+        }
         return recipeSummaryResource!!.loadData()
     }
 

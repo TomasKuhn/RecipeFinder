@@ -8,8 +8,7 @@ data class UiRecipeDetail(
     val imageUrl: String,
     val likes: String,
     val score: String,
-    val duration: String,
-    val ingredients: List<String>
+    val duration: String
 ) {
 
     companion object {
@@ -19,8 +18,7 @@ data class UiRecipeDetail(
                 imageUrl = recipeDetail.image,
                 likes = recipeDetail.likes.toString(),
                 score = String.format("%.0f", recipeDetail.score),
-                duration = "${recipeDetail.readyInMinutes} m",
-                ingredients = recipeDetail.ingredients
+                duration = "${recipeDetail.readyInMinutes} m"
             )
         }
     }

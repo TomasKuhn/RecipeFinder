@@ -16,7 +16,7 @@ open class BindingRecyclerAdapter<DATA, BINDING : ViewDataBinding>(
     @LayoutRes private val itemLayoutRes: Int,
     private val binder: DataBinder<DATA, BINDING>,
     private val lifecycleOwner: LifecycleOwner? = null,
-    private val onItemClick: ((DATA) -> Unit)? = null
+    private val onItemClick: ((position: Int) -> Unit)? = null
 ) : RecyclerView.Adapter<DataViewHolder<BINDING>>() {
 
     var data: List<DATA> = listOf()
@@ -30,7 +30,7 @@ open class BindingRecyclerAdapter<DATA, BINDING : ViewDataBinding>(
         binder.bind(item, holder.binding)
         if (onItemClick != null) {
             holder.itemView.setOnClickListener {
-                onItemClick.invoke(item)
+                onItemClick.invoke(position)
             }
         }
     }
@@ -78,7 +78,7 @@ open class IdBindingRecyclerAdapter<DATA : Identifiable, BINDING : ViewDataBindi
     @LayoutRes private val itemLayoutRes: Int,
     private var binder: DataBinder<DATA, BINDING>,
     private val lifecycleOwner: LifecycleOwner? = null,
-    private val onItemClick: ((DATA) -> Unit)? = null
+    private val onItemClick: ((position: Int) -> Unit)? = null
 ) : ListAdapter<DATA, DataViewHolder<BINDING>>(object : DiffUtil.ItemCallback<DATA>() {
 
     @SuppressLint("DiffUtilEquals")
@@ -98,7 +98,7 @@ open class IdBindingRecyclerAdapter<DATA : Identifiable, BINDING : ViewDataBindi
         binder.bind(item, holder.binding)
         if (onItemClick != null) {
             holder.itemView.setOnClickListener {
-                onItemClick.invoke(item)
+                onItemClick.invoke(position)
             }
         }
     }

@@ -28,8 +28,8 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(R.la
     }
 
     private fun handleViewModel() {
-        vm.showRecipeDetailEvent.observe(viewLifecycleOwner) { recipeId ->
-            navigateTo(SearchFragmentDirections.actionSearchFragmentToDetailFragment(recipeId))
+        vm.showRecipeDetailEvent.observe(viewLifecycleOwner) { recipe ->
+            navigateTo(SearchFragmentDirections.actionSearchFragmentToDetailFragment(recipe.id))
         }
     }
 }

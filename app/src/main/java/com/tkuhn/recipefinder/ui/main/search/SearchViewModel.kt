@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.map
 import com.tkuhn.recipefinder.R
+import com.tkuhn.recipefinder.domain.Recipe
 import com.tkuhn.recipefinder.repository.RecipesRepo
 import com.tkuhn.recipefinder.ui.BaseViewModel
 import com.tkuhn.recipefinder.utils.LiveEvent
@@ -20,13 +21,16 @@ class SearchViewModel(
     val maxCalories = savedStateHandle.getLiveData<String>("maxCalories")
     val minCaloriesError = MutableLiveData<String>()
     val maxCaloriesError = MutableLiveData<String>()
-    val recipes = MutableLiveData<List<UiRecipe>>()
+    val recipes = MutableLiveData<List<Recipe>>()
     val noRecipesFound = recipes.map { it?.isEmpty() == true }
-    val onItemClick: (UiRecipe) -> Unit = {
-        showRecipeDetailEvent.value = it.id
+    val onItemClick: (Recipe) -> Unit = {
+        showRecipeDetailEvent.value = it
+    }
+    val recipeMapper: (Recipe) -> UiRecipe = {
+        UiRecipe.create(it)
     }
 
-    val showRecipeDetailEvent = LiveEvent<Long>()
+    val showRecipeDetailEvent = LiveEvent<Recipe>()
 
     @UseExperimental(ExperimentalContracts::class)
     fun search() {
@@ -40,7 +44,7 @@ class SearchViewModel(
             if (max > min) {
                 hideKeyboard()
                 load(recipesRepo.findRecipesBuNutrient(min, max), CALL_FIND_RECIPE, onData = {
-                    recipes.value = it.map { r -> UiRecipe.create(r) }
+                    recipes.value = it
                 })
             } else {
                 snackMessage.value = R.string.search_min_max_condition.toText()

@@ -27,6 +27,7 @@ object Dependencies {
         val livedataExtensions = "1.3.0"
         val coil = "0.9.5"
         val legacyV4 = "1.0.0"
+        val junitJupiter = "5.5.2"
     }
 
     object BuildPlugins {
@@ -77,5 +78,8 @@ object Dependencies {
 
         // Coil
         val coil = "io.coil-kt:coil:${Versions.coil}"
+
+        // Tests
+        val junitJupiter = "org.junit.jupiter:junit-jupiter:${Versions.junitJupiter}"
     }
 }
