@@ -28,6 +28,12 @@ object Dependencies {
         val coil = "0.9.5"
         val legacyV4 = "1.0.0"
         val junitJupiter = "5.5.2"
+        val koinTest = "2.1.1"
+        val coroutinesTest = "1.3.4"
+        val truth = "1.0.1"
+        val mockk = "1.9.3"
+        val archCoreTest = "2.1.0"
+        val espresso = "3.1.0"
     }
 
     object BuildPlugins {
@@ -50,10 +56,8 @@ object Dependencies {
         val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
         val roomKtx = "androidx.room:room-ktx:${Versions.room}"
         val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
-        val lifecycleViewModelKtx =
-            "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}" //viewModelScope
-        val lifecycleRuntimeKtx =
-            "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}" //lifeCycleScope
+        val lifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}" //viewModelScope
+        val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}" //lifeCycleScope
         val lifecycleLiveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}" //livedata { ...}
         val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
         val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
@@ -81,5 +85,11 @@ object Dependencies {
 
         // Tests
         val junitJupiter = "org.junit.jupiter:junit-jupiter:${Versions.junitJupiter}"
+        val koinTest = "org.koin:koin-test:${Versions.koinTest}"
+        val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutinesTest}"
+        val truth = "com.google.truth:truth:${Versions.truth}"
+        val mockk = "io.mockk:mockk:${Versions.mockk}"
+        val archCoreTest = "androidx.arch.core:core-testing:${Versions.archCoreTest}"
+        val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
     }
 }
