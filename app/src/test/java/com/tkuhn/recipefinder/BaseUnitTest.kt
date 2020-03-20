@@ -1,7 +1,6 @@
 package com.tkuhn.recipefinder
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import io.mockk.MockKAnnotations
 import io.mockk.clearAllMocks
 import io.mockk.clearStaticMockk
 import io.mockk.mockkStatic
@@ -34,9 +33,7 @@ abstract class BaseUnitTest : KoinTest {
     @ObsoleteCoroutinesApi
     @ExperimentalCoroutinesApi
     @Before
-    fun beforeAll() {
-        MockKAnnotations.init(this)
-
+    fun before() {
         startKoin {
             modules(testingModules)
         }
@@ -47,7 +44,7 @@ abstract class BaseUnitTest : KoinTest {
     @ObsoleteCoroutinesApi
     @ExperimentalCoroutinesApi
     @After
-    fun afterAll() {
+    fun after() {
         clearAllMocks()
         clearStaticMockk()
 
