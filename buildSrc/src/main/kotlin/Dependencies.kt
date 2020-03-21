@@ -13,7 +13,7 @@ object Dependencies {
         val gradlePlugin = "4.0.0-beta01"
         val kotlin = "1.3.61"
         val material = "1.2.0-alpha04"
-        val navigation = "2.3.0-alpha01"
+        val navigation = "2.3.0-alpha04"
         val coreKtx = "1.2.0"
         val constraintLayout = "2.0.0-beta4"
         val coroutines = "1.3.3"
@@ -94,7 +94,10 @@ object Dependencies {
         val mockk = "io.mockk:mockk:${Versions.mockk}"
         val archCoreTest = "androidx.arch.core:core-testing:${Versions.archCoreTest}"
         val espressoCore = "androidx.test.espresso:espresso-core:${Versions.espresso}"
-        val espressoIdlingResources = "androidx.test.espresso:espresso-idling-resource:${Versions.espresso}"
+        val espressoContrib = "androidx.test.espresso:espresso-contrib:${Versions.espresso}"
+        val espressoIdlingResources =
+            "androidx.test.espresso:espresso-idling-resource:${Versions.espresso}"
         val fragmentTest = "androidx.fragment:fragment-testing:${Versions.fragmentTest}"
+        val navigationTest = "androidx.navigation:navigation-testing:${Versions.navigation}"
     }
 }

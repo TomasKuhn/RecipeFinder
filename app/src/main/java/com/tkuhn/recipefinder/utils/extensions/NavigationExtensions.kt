@@ -9,7 +9,7 @@ import timber.log.Timber
 fun View.navigateTo(direction: NavDirections) {
     try {
         Navigation.findNavController(this).navigate(direction)
-    } catch (e: IllegalArgumentException) {
+    } catch (e: Exception) {
         Timber.e(e.message ?: "IllegalArgumentException: navigateTo")
     }
 }

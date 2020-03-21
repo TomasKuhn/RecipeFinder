@@ -1,3 +1,4 @@
+
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.testing.FragmentScenario
@@ -5,9 +6,14 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers
+import com.google.common.truth.Subject
+import com.google.common.truth.Truth
 import com.tkuhn.recipefinder.R
+import com.tkuhn.recipefinder.utils.databinding.DataViewHolder
 import com.tkuhn.recipefinder.utils.extensions.toText
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
@@ -36,8 +42,23 @@ infix fun Int.write(text: String) {
     perform(ViewActions.typeText(text))
 }
 
+infix fun Int.clickOnRecyclerItem(position: Int) {
+    perform(actionOnItemAtPosition<DataViewHolder<*>>(position, click()))
+}
+
+infix fun Any?.assert(block: Subject.() -> Unit) {
+    Truth.assertThat(this).run {
+        block(this)
+    }
+}
+
 fun snackbarIsDisplayed(snackbarMessage: String) {
-    onView(Matchers.allOf(ViewMatchers.withId(R.id.snackbar_text), ViewMatchers.withText(snackbarMessage))).check(
+    onView(
+        Matchers.allOf(
+            ViewMatchers.withId(R.id.snackbar_text),
+            ViewMatchers.withText(snackbarMessage)
+        )
+    ).check(
         ViewAssertions.matches(
             ViewMatchers.isDisplayed()
         )

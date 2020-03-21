@@ -88,7 +88,7 @@ dependencies {
     implementation(Dependencies.Libs.retrofitConverter)
     implementation(Dependencies.Libs.okhttp3)
 
-    // Loggin
+    // Logs
     implementation(Dependencies.Libs.timber)
 
     // Coil
@@ -104,6 +104,9 @@ dependencies {
     testImplementation(Dependencies.Libs.archCoreTest)
     androidTestImplementation(Dependencies.Libs.junitExt)
     androidTestImplementation(Dependencies.Libs.espressoCore)
+    androidTestImplementation(Dependencies.Libs.espressoContrib)
+    androidTestImplementation(Dependencies.Libs.truth)
+    androidTestImplementation(Dependencies.Libs.navigationTest)
     debugImplementation(Dependencies.Libs.fragmentTest) {
         exclude(group = "androidx.test", module = "core")
     }
