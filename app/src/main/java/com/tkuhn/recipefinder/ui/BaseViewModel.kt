@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.concurrent.atomic.AtomicBoolean
 
 open class BaseViewModel : ViewModel() {
 
@@ -31,24 +32,29 @@ open class BaseViewModel : ViewModel() {
     ) {
         viewModelScope.launch {
             EspressoIdlingResources.increment()
+            val espressoDecremented = AtomicBoolean()
             input.collect { resource ->
                 when (resource) {
                     is Resource.Success -> {
                         Timber.d("Success with data data: ${resource.data}")
-                        EspressoIdlingResources.decrement()
                         onSuccess?.invoke()
                         if (!onBackground) {
                             onIsLoadingChange(id, loading, false)
+                        }
+                        if (espressoDecremented.compareAndSet(false, true)) {
+                            EspressoIdlingResources.decrement()
                         }
                     }
                     is Resource.Error   -> {
                         val error = resource.error
                         Timber.d("Error because of $error")
-                        EspressoIdlingResources.decrement()
                         onError?.invoke(resource.error)
                         if (!onBackground) {
                             snackMessage.value = error.message
                             onIsLoadingChange(id, loading, false)
+                        }
+                        if (espressoDecremented.compareAndSet(false, true)) {
+                            EspressoIdlingResources.decrement()
                         }
                     }
                     is Resource.Loading -> {
