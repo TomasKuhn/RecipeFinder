@@ -54,4 +54,12 @@ class SearchFragmentTest : BaseUiTest() {
         R.id.vLabelRecipes matches isDisplayed()
         R.id.vRecyclerRecipes matches isNotEmpty()
     }
+
+    @Test
+    fun showEmptyRecipesLabel() {
+        launchFragment<SearchFragment>().onFragment { fragment ->
+            fragment.vm.recipes.value = emptyList()
+        }
+        R.id.vLabelNoRecipes matches isDisplayed()
+    }
 }

@@ -1,5 +1,6 @@
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewAction
@@ -19,8 +20,8 @@ infix fun Int.matches(matcher: Matcher<View>) {
     onView(ViewMatchers.withId(this)).check(ViewAssertions.matches(matcher))
 }
 
-inline fun <reified F : Fragment> launchFragment() {
-    launchFragmentInContainer<F>(themeResId = R.style.AppTheme)
+inline fun <reified F : Fragment> launchFragment(): FragmentScenario<F> {
+    return launchFragmentInContainer<F>(themeResId = R.style.AppTheme)
 }
 
 infix fun Int.hasText(text: String) {
