@@ -7,7 +7,9 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import com.tkuhn.recipefinder.R
+import com.tkuhn.recipefinder.utils.extensions.toText
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers
 
 infix fun Int.perform(action: ViewAction) {
     onView(ViewMatchers.withId(this)).perform(action)
@@ -31,4 +33,16 @@ infix fun Int.hasHint(resourceId: Int) {
 
 infix fun Int.write(text: String) {
     perform(ViewActions.typeText(text))
+}
+
+fun snackbarIsDisplayed(snackbarMessage: String) {
+    onView(Matchers.allOf(ViewMatchers.withId(R.id.snackbar_text), ViewMatchers.withText(snackbarMessage))).check(
+        ViewAssertions.matches(
+            ViewMatchers.isDisplayed()
+        )
+    )
+}
+
+fun snackbarIsDisplayed(snackbarMessage: Int) {
+    snackbarIsDisplayed(snackbarMessage.toText())
 }

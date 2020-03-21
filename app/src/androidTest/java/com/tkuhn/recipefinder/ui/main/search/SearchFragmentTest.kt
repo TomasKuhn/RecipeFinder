@@ -3,12 +3,8 @@ package com.tkuhn.recipefinder.ui.main.search
 import CustomMatchers.hasErrorText
 import CustomMatchers.isNotEmpty
 import android.os.SystemClock
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.tkuhn.recipefinder.R
 import com.tkuhn.recipefinder.utils.extensions.toText
@@ -16,10 +12,10 @@ import hasHint
 import hasText
 import launchFragment
 import matches
-import org.hamcrest.Matchers.allOf
 import org.junit.Test
 import org.junit.runner.RunWith
 import perform
+import snackbarIsDisplayed
 import write
 
 @RunWith(AndroidJUnit4::class)
@@ -49,7 +45,7 @@ class SearchFragmentTest {
         R.id.vEditMinCalories write "100"
         R.id.vEditMaxCalories write "1"
         R.id.vButtonSearch perform click()
-        onView(allOf(withId(R.id.snackbar_text), withText(R.string.search_min_max_condition))).check(matches(isDisplayed())) //TODO nicer
+        snackbarIsDisplayed(R.string.search_min_max_condition)
     }
 
     @Test
