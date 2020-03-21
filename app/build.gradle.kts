@@ -95,6 +95,7 @@ dependencies {
     implementation(Dependencies.Libs.coil)
 
     // Tests
+    implementation(Dependencies.Libs.espressoIdlingResources)
     testImplementation(Dependencies.Libs.junit)
     testImplementation(Dependencies.Libs.koinTest)
     testImplementation(Dependencies.Libs.coroutinesTest)
@@ -102,7 +103,7 @@ dependencies {
     testImplementation(Dependencies.Libs.mockk)
     testImplementation(Dependencies.Libs.archCoreTest)
     androidTestImplementation(Dependencies.Libs.junitExt)
-    androidTestImplementation(Dependencies.Libs.espresso)
+    androidTestImplementation(Dependencies.Libs.espressoCore)
     debugImplementation(Dependencies.Libs.fragmentTest) {
         exclude(group = "androidx.test", module = "core")
     }

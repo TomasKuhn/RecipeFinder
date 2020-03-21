@@ -93,7 +93,8 @@ object Dependencies {
         val truth = "com.google.truth:truth:${Versions.truth}"
         val mockk = "io.mockk:mockk:${Versions.mockk}"
         val archCoreTest = "androidx.arch.core:core-testing:${Versions.archCoreTest}"
-        val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
+        val espressoCore = "androidx.test.espresso:espresso-core:${Versions.espresso}"
+        val espressoIdlingResources = "androidx.test.espresso:espresso-idling-resource:${Versions.espresso}"
         val fragmentTest = "androidx.fragment:fragment-testing:${Versions.fragmentTest}"
     }
 }

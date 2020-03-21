@@ -3,6 +3,7 @@ package com.tkuhn.recipefinder.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tkuhn.recipefinder.EspressoIdlingResources
 import com.tkuhn.recipefinder.datasource.network.Resource
 import com.tkuhn.recipefinder.datasource.network.ResourceError
 import com.tkuhn.recipefinder.utils.LiveEvent
@@ -29,10 +30,12 @@ open class BaseViewModel : ViewModel() {
             onBackground: Boolean = false
     ) {
         viewModelScope.launch {
+            EspressoIdlingResources.increment()
             input.collect { resource ->
                 when (resource) {
                     is Resource.Success -> {
                         Timber.d("Success with data data: ${resource.data}")
+                        EspressoIdlingResources.decrement()
                         onSuccess?.invoke()
                         if (!onBackground) {
                             onIsLoadingChange(id, loading, false)
@@ -41,6 +44,7 @@ open class BaseViewModel : ViewModel() {
                     is Resource.Error   -> {
                         val error = resource.error
                         Timber.d("Error because of $error")
+                        EspressoIdlingResources.decrement()
                         onError?.invoke(resource.error)
                         if (!onBackground) {
                             snackMessage.value = error.message
