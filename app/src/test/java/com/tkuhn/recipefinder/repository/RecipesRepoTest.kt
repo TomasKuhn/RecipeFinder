@@ -18,13 +18,16 @@ import retrofit2.Response
 
 internal class RecipesRepoTest : BaseUnitTest() {
 
+    companion object {
+        private val recipesService: RecipesService = mockk()
+        private val db: Db = mockk()
+    }
+
     override val testingModules = module {
         single { RecipesRepo(recipesService, db) }
     }
 
     private val recipesRepo: RecipesRepo by inject()
-    private val recipesService: RecipesService = mockk()
-    private val db: Db = mockk()
 
     @Test
     fun findRecipesBuNutrient() = runBlocking {

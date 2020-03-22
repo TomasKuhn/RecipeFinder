@@ -22,22 +22,25 @@ import org.koin.dsl.module
 
 internal class SearchViewModelTest : BaseUnitTest() {
 
+    companion object {
+        private val recipesRepo: RecipesRepo = mockk()
+        private val mockRecipe = Recipe(
+            30078,
+            "Yuzu Dipping Sauce",
+            "https://spoonacular.com/recipeImages/30078-312x231.jpg",
+            3,
+            "0g",
+            "0g",
+            "1g"
+        )
+    }
+
     override val testingModules = module {
         viewModel { SearchViewModel(savedStateHandle, recipesRepo) }
     }
 
     private val viewModel: SearchViewModel by inject()
-    private val recipesRepo = mockk<RecipesRepo>()
     private val savedStateHandle = SavedStateHandle()
-    private val mockRecipe = Recipe(
-        30078,
-        "Yuzu Dipping Sauce",
-        "https://spoonacular.com/recipeImages/30078-312x231.jpg",
-        3,
-        "0g",
-        "0g",
-        "1g"
-    )
 
     @Test
     fun `show empty min calories error on search`() {
