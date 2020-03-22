@@ -3,6 +3,7 @@ package com.tkuhn.recipefinder.ui.main.search
 import BaseUiTest
 import CustomMatchers.hasErrorText
 import CustomMatchers.isNotEmpty
+import androidx.fragment.app.testing.FragmentScenario
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
@@ -16,6 +17,7 @@ import hasHint
 import hasText
 import launchFragment
 import matches
+import org.junit.Before
 import org.junit.Test
 import perform
 import snackbarIsDisplayed
@@ -23,9 +25,15 @@ import write
 
 class SearchFragmentTest : BaseUiTest() {
 
+    private lateinit var scenario: FragmentScenario<SearchFragment>
+
+    @Before
+    fun launchSearchFragment() {
+        scenario = launchFragment()
+    }
+
     @Test
     fun launchFragmentAndVerifyUI() {
-        launchFragment<SearchFragment>()
         R.id.vButtonSearch matches isDisplayed()
         R.id.vEditMinCalories hasHint R.string.search_min_calories
         R.id.vEditMaxCalories hasHint R.string.search_max_calories
@@ -35,7 +43,6 @@ class SearchFragmentTest : BaseUiTest() {
 
     @Test
     fun showEmptyMinMaxErrors() {
-        launchFragment<SearchFragment>()
         R.id.vButtonSearch perform click()
         R.id.vTilMinCalories matches hasErrorText(R.string.err_empty_field.toText())
         R.id.vTilMaxCalories matches hasErrorText(R.string.err_empty_field.toText())
@@ -43,7 +50,6 @@ class SearchFragmentTest : BaseUiTest() {
 
     @Test
     fun showMinMaxConditionError() {
-        launchFragment<SearchFragment>()
         R.id.vEditMinCalories write "100"
         R.id.vEditMaxCalories write "1"
         R.id.vButtonSearch perform click()
@@ -52,7 +58,6 @@ class SearchFragmentTest : BaseUiTest() {
 
     @Test
     fun loadRecipes() {
-        launchFragment<SearchFragment>()
         searchWithValidRequirements()
         R.id.vLabelRecipes matches isDisplayed()
         R.id.vRecyclerRecipes matches isNotEmpty()
@@ -60,7 +65,7 @@ class SearchFragmentTest : BaseUiTest() {
 
     @Test
     fun showEmptyRecipesLabel() {
-        launchFragment<SearchFragment>().onFragment { fragment ->
+        scenario.onFragment { fragment ->
             fragment.vm.recipes.value = emptyList()
         }
         R.id.vLabelNoRecipes matches isDisplayed()
@@ -71,7 +76,7 @@ class SearchFragmentTest : BaseUiTest() {
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext()).apply {
             setGraph(R.navigation.nav_graph)
         }
-        launchFragment<SearchFragment>().onFragment { fragment ->
+        scenario.onFragment { fragment ->
             Navigation.setViewNavController(fragment.requireView(), navController)
         }
 
