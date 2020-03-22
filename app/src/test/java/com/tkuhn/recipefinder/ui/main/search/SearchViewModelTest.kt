@@ -40,7 +40,7 @@ internal class SearchViewModelTest : BaseUnitTest() {
     )
 
     @Test
-    fun search_error_minIsEmpty() {
+    fun `show empty min calories error on search`() {
         // Given
         val errorMessage = "Can't be empty"
         mockResources()
@@ -57,7 +57,7 @@ internal class SearchViewModelTest : BaseUnitTest() {
     }
 
     @Test
-    fun search_error_maxIsLowerThanMin() {
+    fun `show max is lower than min error on search`() {
         // Given
         val errorMessage = "Max must be greater then min"
         mockResources()
@@ -75,7 +75,7 @@ internal class SearchViewModelTest : BaseUnitTest() {
     }
 
     @Test
-    fun search_error_setErrorMessage() {
+    fun `search caused unexpected error`() {
         // Given
         val errorMessage = "Unexpected error"
         val snackMessageObserver = viewModel.snackMessage.mockObserver()
@@ -97,7 +97,7 @@ internal class SearchViewModelTest : BaseUnitTest() {
     }
 
     @Test
-    fun search_success_recipeAreLoaded() {
+    fun `successfully search recipes`() {
         // Given
         val recipesObserver = viewModel.recipes.mockObserver()
         every {

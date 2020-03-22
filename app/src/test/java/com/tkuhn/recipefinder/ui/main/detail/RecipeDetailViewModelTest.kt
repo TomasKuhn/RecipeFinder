@@ -61,7 +61,7 @@ internal class RecipeDetailViewModelTest : BaseUnitTest() {
     private val viewModel: RecipeDetailViewModel by inject()
 
     @Test
-    fun recipeDetail_success_recipeDetailDownloaded() {
+    fun `download recipe detail on initialization`() {
         // Given
         val uiRecipe = UiRecipeDetail.create(mockRecipeDetail)
         val recipeDetailObserver = viewModel.uiRecipeDetail.mockObserver()
@@ -73,7 +73,7 @@ internal class RecipeDetailViewModelTest : BaseUnitTest() {
     }
 
     @Test
-    fun recipeSummary_success_recipeSummaryDownloaded() {
+    fun `download recipe summary on initialization`() {
         // Given
         val summaryObserver = viewModel.recipeSummary.mockObserver()
 
@@ -84,7 +84,7 @@ internal class RecipeDetailViewModelTest : BaseUnitTest() {
     }
 
     @Test
-    fun isRefreshing_success_changed() {
+    fun `isLoading is true during refresh and false on finish`() {
         // Given
         every {
             recipesRepo.refreshRecipeDetail()
