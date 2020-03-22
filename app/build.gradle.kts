@@ -88,20 +88,28 @@ dependencies {
     implementation(Dependencies.Libs.retrofitConverter)
     implementation(Dependencies.Libs.okhttp3)
 
-    // Loggin
+    // Logs
     implementation(Dependencies.Libs.timber)
 
     // Coil
     implementation(Dependencies.Libs.coil)
 
     // Tests
-    testImplementation(Dependencies.Libs.junitJupiter)
+    implementation(Dependencies.Libs.espressoIdlingResources)
+    testImplementation(Dependencies.Libs.junit)
     testImplementation(Dependencies.Libs.koinTest)
     testImplementation(Dependencies.Libs.coroutinesTest)
     testImplementation(Dependencies.Libs.truth)
     testImplementation(Dependencies.Libs.mockk)
     testImplementation(Dependencies.Libs.archCoreTest)
-    testImplementation(Dependencies.Libs.espresso)
+    androidTestImplementation(Dependencies.Libs.junitExt)
+    androidTestImplementation(Dependencies.Libs.espressoCore)
+    androidTestImplementation(Dependencies.Libs.espressoContrib)
+    androidTestImplementation(Dependencies.Libs.truth)
+    androidTestImplementation(Dependencies.Libs.navigationTest)
+    debugImplementation(Dependencies.Libs.fragmentTest) {
+        exclude(group = "androidx.test", module = "core")
+    }
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {

@@ -8,13 +8,14 @@ import com.tkuhn.recipefinder.datasource.network.Resource
 import com.tkuhn.recipefinder.datasource.network.ResourceError
 import com.tkuhn.recipefinder.domain.Recipe
 import com.tkuhn.recipefinder.getValues
-import com.tkuhn.recipefinder.mock.RecipesRepoMock
 import com.tkuhn.recipefinder.mockObserver
+import com.tkuhn.recipefinder.repository.RecipesRepo
 import com.tkuhn.recipefinder.utils.extensions.toText
 import io.mockk.every
+import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.flow.flow
-import org.junit.jupiter.api.Test
+import kotlinx.coroutines.flow.flowOf
+import org.junit.Test
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.inject
 import org.koin.dsl.module
@@ -25,9 +26,18 @@ internal class SearchViewModelTest : BaseUnitTest() {
         viewModel { SearchViewModel(savedStateHandle, recipesRepo) }
     }
 
-    private val savedStateHandle = SavedStateHandle()
-    private val recipesRepo = RecipesRepoMock.mock
     private val viewModel: SearchViewModel by inject()
+    private val recipesRepo = mockk<RecipesRepo>()
+    private val savedStateHandle = SavedStateHandle()
+    private val mockRecipe = Recipe(
+        30078,
+        "Yuzu Dipping Sauce",
+        "https://spoonacular.com/recipeImages/30078-312x231.jpg",
+        3,
+        "0g",
+        "0g",
+        "1g"
+    )
 
     @Test
     fun search_error_minIsEmpty() {
@@ -71,9 +81,7 @@ internal class SearchViewModelTest : BaseUnitTest() {
         val snackMessageObserver = viewModel.snackMessage.mockObserver()
         every {
             recipesRepo.findRecipesBuNutrient(any(), any())
-        } returns flow {
-            emit(Resource.Error<List<Recipe>>(ResourceError.UnexpectedError(errorMessage)))
-        }
+        } returns flowOf(Resource.Error(ResourceError.UnexpectedError(errorMessage)))
 
         // When
         val min = 10
@@ -92,6 +100,9 @@ internal class SearchViewModelTest : BaseUnitTest() {
     fun search_success_recipeAreLoaded() {
         // Given
         val recipesObserver = viewModel.recipes.mockObserver()
+        every {
+            recipesRepo.findRecipesBuNutrient(any(), any())
+        } returns flowOf(Resource.Success(listOf(mockRecipe)))
 
         // When
         val min = 10

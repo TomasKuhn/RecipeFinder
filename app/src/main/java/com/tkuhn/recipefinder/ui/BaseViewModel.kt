@@ -3,6 +3,7 @@ package com.tkuhn.recipefinder.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tkuhn.recipefinder.EspressoIdlingResources
 import com.tkuhn.recipefinder.datasource.network.Resource
 import com.tkuhn.recipefinder.datasource.network.ResourceError
 import com.tkuhn.recipefinder.utils.LiveEvent
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.concurrent.atomic.AtomicBoolean
 
 open class BaseViewModel : ViewModel() {
 
@@ -29,6 +31,8 @@ open class BaseViewModel : ViewModel() {
             onBackground: Boolean = false
     ) {
         viewModelScope.launch {
+            EspressoIdlingResources.increment()
+            val espressoDecremented = AtomicBoolean()
             input.collect { resource ->
                 when (resource) {
                     is Resource.Success -> {
@@ -36,6 +40,9 @@ open class BaseViewModel : ViewModel() {
                         onSuccess?.invoke()
                         if (!onBackground) {
                             onIsLoadingChange(id, loading, false)
+                        }
+                        if (espressoDecremented.compareAndSet(false, true)) {
+                            EspressoIdlingResources.decrement()
                         }
                     }
                     is Resource.Error   -> {
@@ -45,6 +52,9 @@ open class BaseViewModel : ViewModel() {
                         if (!onBackground) {
                             snackMessage.value = error.message
                             onIsLoadingChange(id, loading, false)
+                        }
+                        if (espressoDecremented.compareAndSet(false, true)) {
+                            EspressoIdlingResources.decrement()
                         }
                     }
                     is Resource.Loading -> {
