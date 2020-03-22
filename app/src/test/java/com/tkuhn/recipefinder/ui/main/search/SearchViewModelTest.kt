@@ -3,10 +3,10 @@ package com.tkuhn.recipefinder.ui.main.search
 import androidx.lifecycle.SavedStateHandle
 import com.google.common.truth.Truth
 import com.tkuhn.recipefinder.BaseUnitTest
+import com.tkuhn.recipefinder.MockData
 import com.tkuhn.recipefinder.R
 import com.tkuhn.recipefinder.datasource.network.Resource
 import com.tkuhn.recipefinder.datasource.network.ResourceError
-import com.tkuhn.recipefinder.domain.Recipe
 import com.tkuhn.recipefinder.getValues
 import com.tkuhn.recipefinder.mockObserver
 import com.tkuhn.recipefinder.repository.RecipesRepo
@@ -24,15 +24,7 @@ internal class SearchViewModelTest : BaseUnitTest() {
 
     companion object {
         private val recipesRepo: RecipesRepo = mockk()
-        private val mockRecipe = Recipe(
-            30078,
-            "Yuzu Dipping Sauce",
-            "https://spoonacular.com/recipeImages/30078-312x231.jpg",
-            3,
-            "0g",
-            "0g",
-            "1g"
-        )
+        private val mockRecipe = MockData.createRecipe()
     }
 
     override val testingModules = module {
@@ -45,9 +37,9 @@ internal class SearchViewModelTest : BaseUnitTest() {
     @Test
     fun `show empty min calories error on search`() {
         // Given
-        val errorMessage = "Can't be empty"
+        val expectedErrorMessage = "Can't be empty"
         mockResources()
-        every { R.string.err_empty_field.toText() } returns errorMessage
+        every { R.string.err_empty_field.toText() } returns expectedErrorMessage
         val minCaloriesErrorObserver = viewModel.minCaloriesError.mockObserver()
 
         // When
@@ -56,15 +48,15 @@ internal class SearchViewModelTest : BaseUnitTest() {
 
         // Then
         val minCaloriesError = minCaloriesErrorObserver.getValues()[0]
-        Truth.assertThat(minCaloriesError).isEqualTo(errorMessage)
+        Truth.assertThat(minCaloriesError).isEqualTo(expectedErrorMessage)
     }
 
     @Test
     fun `show max is lower than min error on search`() {
         // Given
-        val errorMessage = "Max must be greater then min"
+        val expectedErrorMessage = "Max must be greater then min"
         mockResources()
-        every { R.string.search_min_max_condition.toText() } returns errorMessage
+        every { R.string.search_min_max_condition.toText() } returns expectedErrorMessage
         val snackMessageObserver = viewModel.snackMessage.mockObserver()
 
         // When
@@ -74,17 +66,17 @@ internal class SearchViewModelTest : BaseUnitTest() {
 
         // Then
         val snackMessage = snackMessageObserver.getValues()[0]
-        Truth.assertThat(snackMessage).isEqualTo(errorMessage)
+        Truth.assertThat(snackMessage).isEqualTo(expectedErrorMessage)
     }
 
     @Test
     fun `search caused unexpected error`() {
         // Given
-        val errorMessage = "Unexpected error"
+        val expectedErrorMessage = "Unexpected error"
         val snackMessageObserver = viewModel.snackMessage.mockObserver()
         every {
             recipesRepo.findRecipesBuNutrient(any(), any())
-        } returns flowOf(Resource.Error(ResourceError.UnexpectedError(errorMessage)))
+        } returns flowOf(Resource.Error(ResourceError.UnexpectedError(expectedErrorMessage)))
 
         // When
         val min = 10
@@ -95,7 +87,7 @@ internal class SearchViewModelTest : BaseUnitTest() {
 
         // Then
         val snackMessage = snackMessageObserver.getValues()[0]
-        Truth.assertThat(snackMessage).isEqualTo(errorMessage)
+        Truth.assertThat(snackMessage).isEqualTo(expectedErrorMessage)
         verify { recipesRepo.findRecipesBuNutrient(min, max) }
     }
 

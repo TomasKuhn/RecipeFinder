@@ -2,9 +2,8 @@ package com.tkuhn.recipefinder.ui.main.detail
 
 import com.google.common.truth.Truth
 import com.tkuhn.recipefinder.BaseUnitTest
+import com.tkuhn.recipefinder.MockData
 import com.tkuhn.recipefinder.datasource.network.Resource
-import com.tkuhn.recipefinder.domain.RecipeDetail
-import com.tkuhn.recipefinder.domain.RecipeSummary
 import com.tkuhn.recipefinder.getValues
 import com.tkuhn.recipefinder.mockObserver
 import com.tkuhn.recipefinder.repository.RecipesRepo
@@ -23,24 +22,8 @@ internal class RecipeDetailViewModelTest : BaseUnitTest() {
     companion object {
         private const val RECIPE_ID = 30078L
         private val recipesRepo: RecipesRepo = mockk()
-
-        private val mockRecipeDetail = RecipeDetail(
-            RECIPE_ID,
-            "Yuzu Dipping Sauce",
-            "https://spoonacular.com/recipeImages/30078-556x370.jpg",
-            2,
-            "http://www.marthastewart.com/315027/yuzu-dipping-sauce",
-            0,
-            0f,
-            4f,
-            emptyList(),
-            true
-        )
-        private val mockRecipeSummary = RecipeSummary(
-            "Yuzu Dipping Sauce",
-            "If you have roughly <b>2 minutes</b> to spend in the kitchen...",
-            true
-        )
+        private val mockRecipeDetail = MockData.createRecipeDetail(id = RECIPE_ID)
+        private val mockRecipeSummary = MockData.createRecipeSummary()
     }
 
     override val testingModules = module {
@@ -52,12 +35,12 @@ internal class RecipeDetailViewModelTest : BaseUnitTest() {
     fun `download recipe detail on initialization`() {
         // Given
         recipeDetailAndSummaryMocks()
-        val uiRecipe = UiRecipeDetail.create(mockRecipeDetail)
+        val expectedRecipeDetail = UiRecipeDetail.create(mockRecipeDetail)
         val recipeDetailObserver = viewModel.uiRecipeDetail.mockObserver()
 
         // Then
         val values = recipeDetailObserver.getValues(timeout = 300)
-        Truth.assertThat(values[0]).isEqualTo(uiRecipe)
+        Truth.assertThat(values[0]).isEqualTo(expectedRecipeDetail)
         verify { recipesRepo.getRecipeDetail(RECIPE_ID) }
     }
 
@@ -68,8 +51,9 @@ internal class RecipeDetailViewModelTest : BaseUnitTest() {
         val summaryObserver = viewModel.recipeSummary.mockObserver()
 
         // Then
+        val expectedSummary = mockRecipeSummary.summary
         val values = summaryObserver.getValues(timeout = 300)
-        Truth.assertThat(values[0]).isEqualTo(mockRecipeSummary.summary)
+        Truth.assertThat(values[0]).isEqualTo(expectedSummary)
         verify { recipesRepo.getRecipeSummary(RECIPE_ID) }
     }
 
