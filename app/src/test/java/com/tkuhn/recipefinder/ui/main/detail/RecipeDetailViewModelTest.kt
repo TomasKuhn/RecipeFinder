@@ -1,6 +1,6 @@
 package com.tkuhn.recipefinder.ui.main.detail
 
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import com.tkuhn.recipefinder.BaseUnitTest
 import com.tkuhn.recipefinder.MockData
 import com.tkuhn.recipefinder.datasource.network.Resource
@@ -40,7 +40,7 @@ internal class RecipeDetailViewModelTest : BaseUnitTest() {
 
         // Then
         val values = recipeDetailObserver.getValues(timeout = 300)
-        Truth.assertThat(values[0]).isEqualTo(expectedRecipeDetail)
+        assertThat(values[0]).isEqualTo(expectedRecipeDetail)
         verify { recipesRepo.getRecipeDetail(RECIPE_ID) }
     }
 
@@ -53,7 +53,7 @@ internal class RecipeDetailViewModelTest : BaseUnitTest() {
         // Then
         val expectedSummary = mockRecipeSummary.summary
         val values = summaryObserver.getValues(timeout = 300)
-        Truth.assertThat(values[0]).isEqualTo(expectedSummary)
+        assertThat(values[0]).isEqualTo(expectedSummary)
         verify { recipesRepo.getRecipeSummary(RECIPE_ID) }
     }
 
@@ -83,8 +83,8 @@ internal class RecipeDetailViewModelTest : BaseUnitTest() {
 
         // Then
         val values = isRefreshingObserver.getValues(timeout = 1000, exactly = 2)
-        Truth.assertThat(values.first()).isTrue()
-        Truth.assertThat(values.last()).isFalse()
+        assertThat(values.first()).isTrue()
+        assertThat(values.last()).isFalse()
         verify { recipesRepo.refreshRecipeDetail() }
         verify { recipesRepo.refreshRecipeSummary() }
     }

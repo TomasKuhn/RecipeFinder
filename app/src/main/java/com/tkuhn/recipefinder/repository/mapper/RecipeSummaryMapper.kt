@@ -28,3 +28,6 @@ object RecipeSummaryMapper {
         }
     }
 }
+
+fun NetworkRecipeSummary.toDbRecipeSummary() = RecipeSummaryMapper.networkToDb.map(this)
+fun DbRecipeSummary.toRecipeSummary() = RecipeSummaryMapper.dbToDomain.map(this)

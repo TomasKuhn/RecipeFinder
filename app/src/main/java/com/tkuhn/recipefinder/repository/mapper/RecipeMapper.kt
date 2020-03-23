@@ -20,3 +20,5 @@ object RecipeMapper {
     }
     val networkToDomainList = networkToDomain.toListMapper()
 }
+
+fun NetworkRecipe.toRecipe() = RecipeMapper.networkToDomain.map(this)

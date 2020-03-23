@@ -1,5 +1,7 @@
 package com.tkuhn.recipefinder
 
+import com.tkuhn.recipefinder.datasource.network.dto.NetworkIngredient
+import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipeDetail
 import com.tkuhn.recipefinder.domain.Ingredient
 import com.tkuhn.recipefinder.domain.Recipe
 import com.tkuhn.recipefinder.domain.RecipeDetail
@@ -50,6 +52,32 @@ object MockData {
             score,
             ingredients,
             isValid
+        )
+    }
+
+    fun createNetworkRecipeDetail(
+        id: Long = 30078L,
+        title: String = "Yuzu Dipping Sauce",
+        image: String = "https://spoonacular.com/recipeImages/30078-556x370.jpg",
+        imageType: String = "jpg",
+        readyInMinutes: Int = 2,
+        sourceUrl: String = "http://www.marthastewart.com/315027/yuzu-dipping-sauce",
+        likes: Int = 0,
+        healthScore: Float = 0f,
+        score: Float = 4f,
+        ingredients: List<NetworkIngredient> = emptyList()
+    ): NetworkRecipeDetail {
+        return NetworkRecipeDetail(
+            id,
+            title,
+            image,
+            imageType,
+            readyInMinutes,
+            sourceUrl,
+            likes,
+            healthScore,
+            score,
+            ingredients
         )
     }
 

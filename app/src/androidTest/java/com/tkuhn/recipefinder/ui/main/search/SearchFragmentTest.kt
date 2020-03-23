@@ -3,6 +3,7 @@ package com.tkuhn.recipefinder.ui.main.search
 import BaseUiTest
 import CustomMatchers.hasErrorText
 import CustomMatchers.isNotEmpty
+import android.os.SystemClock
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
@@ -68,6 +69,7 @@ class SearchFragmentTest : BaseUiTest() {
         scenario.onFragment { fragment ->
             fragment.vm.recipes.value = emptyList()
         }
+        SystemClock.sleep(100)
         R.id.vLabelNoRecipes matches isDisplayed()
     }
 

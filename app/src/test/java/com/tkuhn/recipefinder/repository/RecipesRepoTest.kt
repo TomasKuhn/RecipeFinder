@@ -1,16 +1,29 @@
 package com.tkuhn.recipefinder.repository
 
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import com.tkuhn.recipefinder.BaseUnitTest
+import com.tkuhn.recipefinder.MockData
 import com.tkuhn.recipefinder.datasource.database.Db
+import com.tkuhn.recipefinder.datasource.database.dao.RecipesDao
 import com.tkuhn.recipefinder.datasource.network.RecipesService
 import com.tkuhn.recipefinder.datasource.network.Resource
+import com.tkuhn.recipefinder.datasource.network.ResourceError
+import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipeDetail
 import com.tkuhn.recipefinder.domain.Recipe
+import com.tkuhn.recipefinder.domain.RecipeDetail
+import com.tkuhn.recipefinder.repository.mapper.toDbRecipeDetail
+import com.tkuhn.recipefinder.repository.mapper.toRecipeDetail
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
+import org.junit.Before
 import org.junit.Test
 import org.koin.core.inject
 import org.koin.dsl.module
@@ -21,6 +34,8 @@ internal class RecipesRepoTest : BaseUnitTest() {
     companion object {
         private val recipesService: RecipesService = mockk()
         private val db: Db = mockk()
+        private val recipesDao: RecipesDao = mockk(relaxed = true)
+        private val recipeDetailErrorResponse = mockk<Response<NetworkRecipeDetail>>()
     }
 
     override val testingModules = module {
@@ -29,8 +44,18 @@ internal class RecipesRepoTest : BaseUnitTest() {
 
     private val recipesRepo: RecipesRepo by inject()
 
+    @Before
+    fun initMocks() {
+        every { db.recipesDao() } returns recipesDao
+        recipeDetailErrorResponse.run {
+            every { code() } returns 404
+            every { message() } returns "Recipe detail wasn't found"
+            every { isSuccessful } returns false
+        }
+    }
+
     @Test
-    fun findRecipesBuNutrient() = runBlocking {
+    fun `load empty recipes`() = runBlocking {
         // Given
         coEvery {
             recipesService.findRecipesByNutrient(any(), any())
@@ -41,53 +66,110 @@ internal class RecipesRepoTest : BaseUnitTest() {
         val resources = flow.toList()
 
         // Then
-        Truth.assertThat(resources[0]).isInstanceOf(Resource.Loading::class.java)
-        Truth.assertThat(resources[1]).isInstanceOf(Resource.Success::class.java)
-        Truth.assertThat(resources[1].data).isEqualTo(emptyList<Recipe>())
+        assertThat(resources).containsExactly(
+            Resource.Loading<List<Recipe>>(),
+            Resource.Success<List<Recipe>>(emptyList())
+        )
         coVerify { recipesService.findRecipesByNutrient(any(), any()) }
     }
 
-    //    @GET("recipes/findByNutrients")
-    //    suspend fun findRecipesByNutrient(
-    //        @Query("minCalories") minCalories: Int,
-    //        @Query("maxCalories") maxCalories: Int,
-    //        @Query("number") number: Int = 30
-    //    ): Response<List<NetworkRecipe>>
+    @Test
+    fun `If recipe is not in cache, remote is called`() = runBlocking {
+        // Given
+        val recipeId = 123L
+        coEvery {
+            recipesDao.getRecipeDetail(eq(recipeId))
+        } returns flowOf(null)
+        coEvery {
+            recipesService.getRecipeDetail(eq(recipeId))
+        } returns Response.success(MockData.createNetworkRecipeDetail(id = recipeId))
 
-    //    @Nested
-    //    @DisplayName("Recipe detail tests")
-    //    inner class RecipeDetail {
-    //        @Test
-    //        fun getRecipeDetail() {
-    //        }
-    //
-    //        @Test
-    //        fun refreshRecipeDetail() {
-    //        }
-    //    }
-    //
-    //    @Nested
-    //    @DisplayName("Recipe summary tests")
-    //    inner class RecipeSummary {
-    //
-    //        @Test
-    //        fun getRecipeSummary() {
-    //        }
-    //
-    //        @Test
-    //        fun refreshRecipeSummary() {
-    //        }
-    //    }
+        // When
+        recipesRepo.getRecipeDetail(recipeId).collect()
 
-    //1. If recipe is not in cache, remote is called
+        // Then
+        coVerify { recipesDao.getRecipeDetail(eq(recipeId)) }
+        coVerify { recipesService.getRecipeDetail(eq(recipeId)) }
+    }
 
-    //2. If recipe is fetched, save it to cache before returning to user
-    //If it's success, recipe is returned from remote
-    //If it's success, recipe is stored in cached
-    //If it's fail, nothing is stored to cache
+    @Test
+    fun `If recipe is not in cache, download it and save it to cache`() = runBlocking {
+        // Given
+        val recipeId = 123L
+        val networkRecipeDetail = MockData.createNetworkRecipeDetail(id = recipeId)
+        coEvery {
+            recipesService.getRecipeDetail(eq(recipeId))
+        } returns Response.success(networkRecipeDetail)
+        coEvery {
+            recipesDao.getRecipeDetail(eq(recipeId))
+        } returns flowOf(null, networkRecipeDetail.toDbRecipeDetail())
 
-    //3. If recipe is in cache, it should be returned before calling a server
-    //If recipe is in cache server is not called
-    //If recipe is in cache it's returned
+        // When
+        val resources = recipesRepo.getRecipeDetail(recipeId).toList()
 
+        // Then
+        val expectedDbRecipeDetail = networkRecipeDetail.toDbRecipeDetail()
+        val expectedRecipeDetail = expectedDbRecipeDetail.toRecipeDetail()
+        assertThat(resources).containsExactly(
+            Resource.Loading<RecipeDetail>(),
+            Resource.Success(expectedRecipeDetail)
+        )
+        coVerifyOrder {
+            recipesDao.getRecipeDetail(eq(recipeId))
+            recipesService.getRecipeDetail(eq(recipeId))
+            recipesDao.insertRecipeDetail(eq(expectedDbRecipeDetail))
+        }
+    }
+
+    @Test
+    fun `If load recipe detail fails, nothing is stored to cache`() = runBlocking {
+        // Given
+        val recipeId = 123L
+        coEvery {
+            recipesDao.getRecipeDetail(eq(recipeId))
+        } returns flowOf(null)
+        coEvery {
+            recipesService.getRecipeDetail(eq(recipeId))
+        } returns recipeDetailErrorResponse
+
+        // When
+        val resources = recipesRepo.getRecipeDetail(recipeId).toList()
+
+        // Then
+        assertThat(resources).containsExactly(
+            Resource.Loading<RecipeDetail>(),
+            Resource.Error<RecipeDetail>(ResourceError.HttpError(recipeDetailErrorResponse.message(), recipeDetailErrorResponse.code()))
+        )
+        coVerifyOrder {
+            recipesDao.getRecipeDetail(eq(recipeId))
+            recipesService.getRecipeDetail(eq(recipeId))
+        }
+        coVerify(exactly = 0) { recipesDao.insertRecipeDetail(any()) }
+    }
+
+    @Test
+    fun `If recipe is in cache, it should be returned before calling a server`() = runBlocking {
+        // Given
+        val recipeId = 123L
+        val networkRecipeDetail = MockData.createNetworkRecipeDetail(id = recipeId)
+        val dbRecipeDetail = networkRecipeDetail.toDbRecipeDetail()
+        coEvery {
+            recipesDao.getRecipeDetail(eq(recipeId))
+        } returns flowOf(dbRecipeDetail)
+        coEvery {
+            recipesService.getRecipeDetail(eq(recipeId))
+        } returns recipeDetailErrorResponse
+
+        // When
+        val resources = recipesRepo.getRecipeDetail(recipeId).toList()
+
+        // Then
+        val expectedRecipeDetail = dbRecipeDetail.toRecipeDetail()
+        assertThat(resources).containsExactly(
+            Resource.Loading<RecipeDetail>(),
+            Resource.Success(expectedRecipeDetail)
+        )
+        verify { recipesDao.getRecipeDetail(eq(recipeId)) }
+        coVerify(exactly = 0) { recipesService.getRecipeDetail(eq(recipeId)) }
+    }
 }

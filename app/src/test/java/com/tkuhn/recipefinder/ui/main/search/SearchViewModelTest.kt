@@ -1,7 +1,7 @@
 package com.tkuhn.recipefinder.ui.main.search
 
 import androidx.lifecycle.SavedStateHandle
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import com.tkuhn.recipefinder.BaseUnitTest
 import com.tkuhn.recipefinder.MockData
 import com.tkuhn.recipefinder.R
@@ -48,7 +48,7 @@ internal class SearchViewModelTest : BaseUnitTest() {
 
         // Then
         val minCaloriesError = minCaloriesErrorObserver.getValues()[0]
-        Truth.assertThat(minCaloriesError).isEqualTo(expectedErrorMessage)
+        assertThat(minCaloriesError).isEqualTo(expectedErrorMessage)
     }
 
     @Test
@@ -66,7 +66,7 @@ internal class SearchViewModelTest : BaseUnitTest() {
 
         // Then
         val snackMessage = snackMessageObserver.getValues()[0]
-        Truth.assertThat(snackMessage).isEqualTo(expectedErrorMessage)
+        assertThat(snackMessage).isEqualTo(expectedErrorMessage)
     }
 
     @Test
@@ -87,7 +87,7 @@ internal class SearchViewModelTest : BaseUnitTest() {
 
         // Then
         val snackMessage = snackMessageObserver.getValues()[0]
-        Truth.assertThat(snackMessage).isEqualTo(expectedErrorMessage)
+        assertThat(snackMessage).isEqualTo(expectedErrorMessage)
         verify { recipesRepo.findRecipesBuNutrient(min, max) }
     }
 
@@ -108,7 +108,7 @@ internal class SearchViewModelTest : BaseUnitTest() {
 
         // Then
         val recipes = recipesObserver.getValues()[0]
-        Truth.assertThat(recipes).isNotEmpty()
+        assertThat(recipes).isNotEmpty()
         verify { recipesRepo.findRecipesBuNutrient(min, max) }
     }
 

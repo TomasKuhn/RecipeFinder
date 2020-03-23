@@ -48,3 +48,6 @@ object RecipeDetailMapper {
         }
     }
 }
+
+fun NetworkRecipeDetail.toDbRecipeDetail() = RecipeDetailMapper.networkToDb.map(this)
+fun DbRecipeDetail.toRecipeDetail() = RecipeDetailMapper.dbToDomain.map(this)
