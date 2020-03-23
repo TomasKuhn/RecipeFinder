@@ -11,9 +11,11 @@ import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipeSummary
 import com.tkuhn.recipefinder.domain.Recipe
 import com.tkuhn.recipefinder.domain.RecipeDetail
 import com.tkuhn.recipefinder.domain.RecipeSummary
-import com.tkuhn.recipefinder.repository.mapper.RecipeDetailMapper
 import com.tkuhn.recipefinder.repository.mapper.RecipeMapper
-import com.tkuhn.recipefinder.repository.mapper.RecipeSummaryMapper
+import com.tkuhn.recipefinder.repository.mapper.toDbRecipeDetail
+import com.tkuhn.recipefinder.repository.mapper.toDbRecipeSummary
+import com.tkuhn.recipefinder.repository.mapper.toRecipeDetail
+import com.tkuhn.recipefinder.repository.mapper.toRecipeSummary
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import retrofit2.Response
@@ -41,7 +43,7 @@ class RecipesRepo(
     fun getRecipeDetail(recipeId: Long): Flow<Resource<RecipeDetail>> {
         recipeDetailResource = object : NetworkBoundResource<RecipeDetail, NetworkRecipeDetail>() {
             override suspend fun saveCallResult(item: NetworkRecipeDetail) {
-                val dbRecipeDetail = RecipeDetailMapper.networkToDb.map(item)
+                val dbRecipeDetail = item.toDbRecipeDetail()
                 db.recipesDao().insertRecipeDetail(dbRecipeDetail)
             }
 
@@ -49,15 +51,9 @@ class RecipesRepo(
                 return data?.isValid != true
             }
 
-            override fun loadFlowFromDb(): Flow<RecipeDetail> {
-                return db.recipesDao().getRecipeDetailFlow(recipeId).map {
-                    RecipeDetailMapper.dbToDomain.map(it)
-                }
-            }
-
-            override suspend fun loadFromDb(): RecipeDetail? {
-                return db.recipesDao().getRecipeDetail(recipeId)?.let { dto ->
-                    RecipeDetailMapper.dbToDomain.map(dto)
+            override fun loadFromDb(): Flow<RecipeDetail?> {
+                return db.recipesDao().getRecipeDetail(recipeId).map {
+                    it?.toRecipeDetail()
                 }
             }
 
@@ -75,7 +71,7 @@ class RecipesRepo(
     fun getRecipeSummary(recipeId: Long): Flow<Resource<RecipeSummary>> {
         recipeSummaryResource = object : NetworkBoundResource<RecipeSummary, NetworkRecipeSummary>() {
             override suspend fun saveCallResult(item: NetworkRecipeSummary) {
-                val dbRecipeSummary = RecipeSummaryMapper.networkToDb.map(item)
+                val dbRecipeSummary = item.toDbRecipeSummary()
                 db.recipesDao().insertRecipeSummary(dbRecipeSummary)
             }
 
@@ -83,15 +79,9 @@ class RecipesRepo(
                 return data?.isValid != true
             }
 
-            override fun loadFlowFromDb(): Flow<RecipeSummary> {
-                return db.recipesDao().getRecipeSummaryFlow(recipeId).map {
-                    RecipeSummaryMapper.dbToDomain.map(it)
-                }
-            }
-
-            override suspend fun loadFromDb(): RecipeSummary? {
-                return db.recipesDao().getRecipeSummary(recipeId)?.let { dto ->
-                    RecipeSummaryMapper.dbToDomain.map(dto)
+            override fun loadFromDb(): Flow<RecipeSummary?> {
+                return db.recipesDao().getRecipeSummary(recipeId).map {
+                    it?.toRecipeSummary()
                 }
             }
 

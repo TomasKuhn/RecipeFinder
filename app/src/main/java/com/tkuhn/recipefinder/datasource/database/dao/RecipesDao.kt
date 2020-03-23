@@ -15,17 +15,11 @@ abstract class RecipesDao {
     abstract suspend fun insertRecipeDetail(recipeDetail: DbRecipeDetail)
 
     @Query("SELECT * FROM RecipeDetails WHERE id = :recipeId")
-    abstract suspend fun getRecipeDetail(recipeId: Long): DbRecipeDetail?
-
-    @Query("SELECT * FROM RecipeDetails WHERE id = :recipeId")
-    abstract fun getRecipeDetailFlow(recipeId: Long): Flow<DbRecipeDetail>
+    abstract fun getRecipeDetail(recipeId: Long): Flow<DbRecipeDetail?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertRecipeSummary(recipeSummary: DbRecipeSummary)
 
     @Query("SELECT * FROM RecipeSummaries WHERE id = :summaryId")
-    abstract suspend fun getRecipeSummary(summaryId: Long): DbRecipeSummary?
-
-    @Query("SELECT * FROM RecipeSummaries WHERE id = :summaryId")
-    abstract fun getRecipeSummaryFlow(summaryId: Long): Flow<DbRecipeSummary>
+    abstract fun getRecipeSummary(summaryId: Long): Flow<DbRecipeSummary?>
 }

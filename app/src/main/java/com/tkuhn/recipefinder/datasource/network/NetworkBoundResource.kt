@@ -23,7 +23,9 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
 import retrofit2.Response
 import timber.log.Timber
 
@@ -42,7 +44,7 @@ abstract class NetworkBoundResource<ResultType, ResponseType> {
         var dbData: ResultType? = null
         return flow {
             emit(Resource.Loading())
-            dbData = loadFromDb()
+            dbData = loadCurrentValueFromDb()
             if (shouldFetch(dbData)) {
                 if (dbData != null) {
                     emit(Resource.Loading(dbData))
@@ -68,8 +70,8 @@ abstract class NetworkBoundResource<ResultType, ResponseType> {
                     return@flow
                 }
             }
-            emitAll(loadFlowFromDb().distinctUntilChanged().map {
-                Resource.Success(it)
+            emitAll(loadFromDb().distinctUntilChanged().mapNotNull {
+                it?.let { Resource.Success(it) }
             })
         }.catch {
             Timber.w(it, "Load data went wrong")
@@ -85,7 +87,7 @@ abstract class NetworkBoundResource<ResultType, ResponseType> {
                 val responseData = processResponse(response)
                 if (responseData != null) {
                     saveCallResult(responseData)
-                    emit(Resource.Success(loadFromDb()))
+                    emit(Resource.Success(loadCurrentValueFromDb()))
                 } else {
                     emit(Resource.Success())
                 }
@@ -107,9 +109,11 @@ abstract class NetworkBoundResource<ResultType, ResponseType> {
 
     protected abstract fun shouldFetch(data: ResultType?): Boolean
 
-    protected abstract fun loadFlowFromDb(): Flow<ResultType>
-
-    protected abstract suspend fun loadFromDb(): ResultType?
+    protected abstract fun loadFromDb(): Flow<ResultType?>
 
     protected abstract suspend fun createCall(): Response<ResponseType>
+
+    private suspend fun loadCurrentValueFromDb(): ResultType? {
+        return loadFromDb().take(1).toList().firstOrNull()
+    }
 }
