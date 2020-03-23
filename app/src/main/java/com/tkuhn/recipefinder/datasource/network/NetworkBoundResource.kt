@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import retrofit2.Response
+import timber.log.Timber
 
 /**
  * A generic class that can provide a resource backed by both the sqlite database and the network.
@@ -71,6 +72,7 @@ abstract class NetworkBoundResource<ResultType, ResponseType> {
                 Resource.Success(it)
             })
         }.catch {
+            Timber.w(it, "Load data went wrong")
             emit(Resource.Error(ResourceError.networkError(it), dbData))
         }.flowOn(Dispatchers.IO)
     }
@@ -92,6 +94,7 @@ abstract class NetworkBoundResource<ResultType, ResponseType> {
                 emit(Resource.Error(ResourceError.HttpError(response.message(), response.code())))
             }
         }.catch {
+            Timber.w(it, "Refresh data went wrong")
             emit(Resource.Error(ResourceError.networkError(it)))
         }.flowOn(Dispatchers.IO)
     }

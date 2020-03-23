@@ -6,7 +6,7 @@ import org.junit.Before
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-open class BaseUiTest {
+abstract class BaseUiTest {
 
     @Before
     fun before() {

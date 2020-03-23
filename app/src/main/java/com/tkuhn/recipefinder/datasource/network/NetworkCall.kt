@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
+import timber.log.Timber
 
 abstract class NetworkCall<ResponseType, ResultType> {
 
@@ -38,6 +39,7 @@ abstract class NetworkCall<ResponseType, ResultType> {
                 emit(Resource.Error(ResourceError.HttpError(response.message(), response.code())))
             }
         }.catch {
+            Timber.w(it, "Network call went wrong")
             emit(Resource.Error(ResourceError.networkError(it)))
         }.flowOn(Dispatchers.IO)
     }
