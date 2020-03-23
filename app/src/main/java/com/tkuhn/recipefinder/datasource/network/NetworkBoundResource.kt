@@ -21,11 +21,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.flow.toList
 import retrofit2.Response
 import timber.log.Timber
 
@@ -114,6 +114,6 @@ abstract class NetworkBoundResource<ResultType, ResponseType> {
     protected abstract suspend fun createCall(): Response<ResponseType>
 
     private suspend fun loadCurrentValueFromDb(): ResultType? {
-        return loadFromDb().take(1).toList().firstOrNull()
+        return loadFromDb().take(1).first()
     }
 }
