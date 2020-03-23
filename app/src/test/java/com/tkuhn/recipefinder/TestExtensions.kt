@@ -15,7 +15,7 @@ inline fun <reified T : Any> Observer<T>.getValues(
     atLeast: Int = 1,
     atMost: Int = Int.MAX_VALUE,
     exactly: Int = -1,
-    timeout: Long = 0
+    timeout: Long = 10
 ): List<T> {
     val results = mutableListOf<T>()
     verify(

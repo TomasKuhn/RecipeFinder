@@ -1,12 +1,59 @@
 package com.tkuhn.recipefinder.repository
 
+import com.google.common.truth.Truth
+import com.tkuhn.recipefinder.BaseUnitTest
+import com.tkuhn.recipefinder.datasource.database.Db
+import com.tkuhn.recipefinder.datasource.network.RecipesService
+import com.tkuhn.recipefinder.datasource.network.Resource
+import com.tkuhn.recipefinder.domain.Recipe
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.runBlocking
+import org.junit.Test
+import org.koin.core.inject
+import org.koin.dsl.module
+import retrofit2.Response
 
-internal class RecipesRepoTest {
+internal class RecipesRepoTest : BaseUnitTest() {
 
-    //    @Test
-    //    fun findRecipesBuNutrient() {
-    //    }
-    //
+    companion object {
+        private val recipesService: RecipesService = mockk()
+        private val db: Db = mockk()
+    }
+
+    override val testingModules = module {
+        single { RecipesRepo(recipesService, db) }
+    }
+
+    private val recipesRepo: RecipesRepo by inject()
+
+    @Test
+    fun findRecipesBuNutrient() = runBlocking {
+        // Given
+        coEvery {
+            recipesService.findRecipesByNutrient(any(), any())
+        } returns Response.success(emptyList())
+
+        // When
+        val flow = recipesRepo.findRecipesBuNutrient(1, 10)
+        val resources = flow.toList()
+
+        // Then
+        Truth.assertThat(resources[0]).isInstanceOf(Resource.Loading::class.java)
+        Truth.assertThat(resources[1]).isInstanceOf(Resource.Success::class.java)
+        Truth.assertThat(resources[1].data).isEqualTo(emptyList<Recipe>())
+        coVerify { recipesService.findRecipesByNutrient(any(), any()) }
+    }
+
+    //    @GET("recipes/findByNutrients")
+    //    suspend fun findRecipesByNutrient(
+    //        @Query("minCalories") minCalories: Int,
+    //        @Query("maxCalories") maxCalories: Int,
+    //        @Query("number") number: Int = 30
+    //    ): Response<List<NetworkRecipe>>
+
     //    @Nested
     //    @DisplayName("Recipe detail tests")
     //    inner class RecipeDetail {
