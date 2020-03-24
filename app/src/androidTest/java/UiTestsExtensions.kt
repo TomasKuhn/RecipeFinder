@@ -1,3 +1,4 @@
+
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -29,7 +30,6 @@ import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.instanceOf
 
-
 infix fun Int.perform(action: ViewAction): ViewInteraction {
     return onView(withId(this)).perform(action)
 }
@@ -52,7 +52,7 @@ infix fun Int.hasHint(resourceId: Int): ViewInteraction {
 
 infix fun Int.hasToolbarTitle(title: String?): ViewInteraction? {
     return onView(allOf(instanceOf(TextView::class.java), withParent(withId(this))))
-            .check(ViewAssertions.matches(withText(title)))
+        .check(ViewAssertions.matches(withText(title)))
 }
 
 infix fun Int.write(text: String?): ViewInteraction {
@@ -63,9 +63,13 @@ infix fun Int.clickOnRecyclerItem(position: Int): ViewInteraction {
     return perform(actionOnItemAtPosition<DataViewHolder<*>>(position, click()))
 }
 
+infix fun Int.hasErrorText(error: String?) {
+    matches(CustomMatchers.hasErrorText(error))
+}
+
 fun Int.itemMatches(position: Int, targetViewId: Int, itemMatcher: Matcher<View>) {
     perform(scrollToPosition<DataViewHolder<*>>(position))
-            .check(ViewAssertions.matches(matchRecyclerItemOnPosition(position, itemMatcher, targetViewId)))
+        .check(ViewAssertions.matches(matchRecyclerItemOnPosition(position, itemMatcher, targetViewId)))
 }
 
 infix fun Any?.assert(block: Subject.() -> Unit) {
@@ -76,7 +80,7 @@ infix fun Any?.assert(block: Subject.() -> Unit) {
 
 fun snackbarIsDisplayed(snackbarMessage: String): ViewInteraction {
     return onView(allOf(withId(R.id.snackbar_text), withText(snackbarMessage)))
-            .check(ViewAssertions.matches(isDisplayed()))
+        .check(ViewAssertions.matches(isDisplayed()))
 }
 
 fun snackbarIsDisplayed(snackbarMessage: Int): ViewInteraction {

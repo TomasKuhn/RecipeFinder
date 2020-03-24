@@ -1,7 +1,6 @@
 package com.tkuhn.recipefinder.ui.main.search
 
 import BaseUiTest
-import CustomMatchers.hasErrorText
 import CustomMatchers.isNotEmpty
 import android.os.SystemClock
 import androidx.fragment.app.testing.FragmentScenario
@@ -14,6 +13,7 @@ import assert
 import clickOnRecyclerItem
 import com.tkuhn.recipefinder.R
 import com.tkuhn.recipefinder.utils.extensions.toText
+import hasErrorText
 import hasHint
 import hasText
 import launchFragment
@@ -45,8 +45,8 @@ class SearchFragmentTest : BaseUiTest() {
     @Test
     fun showEmptyMinMaxErrors() {
         R.id.vButtonSearch perform click()
-        R.id.vTilMinCalories matches hasErrorText(R.string.err_empty_field.toText())
-        R.id.vTilMaxCalories matches hasErrorText(R.string.err_empty_field.toText())
+        R.id.vTilMinCalories hasErrorText R.string.err_empty_field.toText()
+        R.id.vTilMaxCalories hasErrorText R.string.err_empty_field.toText()
     }
 
     @Test
@@ -83,8 +83,7 @@ class SearchFragmentTest : BaseUiTest() {
         }
 
         searchWithValidRequirements()
-        val recipePosition = 0
-        R.id.vRecyclerRecipes.clickOnRecyclerItem(recipePosition)
+        R.id.vRecyclerRecipes clickOnRecyclerItem 0
 
         navController.currentDestination?.id assert { isEqualTo(R.id.detailFragment) }
     }
