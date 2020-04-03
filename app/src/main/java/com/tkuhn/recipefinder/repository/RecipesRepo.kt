@@ -3,8 +3,8 @@ package com.tkuhn.recipefinder.repository
 import com.tkuhn.recipefinder.datasource.database.Db
 import com.tkuhn.recipefinder.datasource.network.NetworkBoundResource
 import com.tkuhn.recipefinder.datasource.network.NetworkCall
-import com.tkuhn.recipefinder.datasource.network.RecipesService
 import com.tkuhn.recipefinder.datasource.network.Resource
+import com.tkuhn.recipefinder.datasource.network.api.RecipesApiService
 import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipe
 import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipeDetail
 import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipeSummary
@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.map
 import retrofit2.Response
 
 class RecipesRepo(
-    private val service: RecipesService,
+    private val apiService: RecipesApiService,
     private val db: Db
 ) {
 
@@ -31,7 +31,7 @@ class RecipesRepo(
     fun findRecipesBuNutrient(minCalories: Int, maxCalories: Int): Flow<Resource<List<Recipe>>> {
         return object : NetworkCall<List<NetworkRecipe>, List<Recipe>>() {
             override suspend fun createCall(): Response<List<NetworkRecipe>> {
-                return service.findRecipesByNutrient(minCalories, maxCalories)
+                return apiService.findRecipesByNutrient(minCalories, maxCalories)
             }
 
             override fun convertResponse(response: List<NetworkRecipe>): List<Recipe> {
@@ -58,7 +58,7 @@ class RecipesRepo(
             }
 
             override suspend fun createCall(): Response<NetworkRecipeDetail> {
-                return service.getRecipeDetail(recipeId)
+                return apiService.getRecipeDetail(recipeId)
             }
         }
         return recipeDetailResource!!.loadData()
@@ -86,7 +86,7 @@ class RecipesRepo(
             }
 
             override suspend fun createCall(): Response<NetworkRecipeSummary> {
-                return service.getRecipeSummary(recipeId)
+                return apiService.getRecipeSummary(recipeId)
             }
         }
         return recipeSummaryResource!!.loadData()

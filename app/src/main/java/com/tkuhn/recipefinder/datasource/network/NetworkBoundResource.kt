@@ -1,8 +1,15 @@
 
 package com.tkuhn.recipefinder.datasource.network
 
+import com.tkuhn.recipefinder.utils.extensions.takeFirstOrNull
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.mapNotNull
 import retrofit2.Response
 import timber.log.Timber
 
@@ -82,6 +89,6 @@ abstract class NetworkBoundResource<ResultType, ResponseType> {
     protected abstract suspend fun createCall(): Response<ResponseType>
 
     private suspend fun loadCurrentValueFromDb(): ResultType? {
-        return loadFromDb().take(1).first()
+        return loadFromDb().takeFirstOrNull()
     }
 }

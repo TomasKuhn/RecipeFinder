@@ -1,4 +1,4 @@
-package com.tkuhn.recipefinder.datasource.network
+package com.tkuhn.recipefinder.datasource.network.api
 
 import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipe
 import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipeDetail
@@ -8,7 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface RecipesService {
+interface RecipesApiService {
 
     @GET("recipes/findByNutrients")
     suspend fun findRecipesByNutrient(

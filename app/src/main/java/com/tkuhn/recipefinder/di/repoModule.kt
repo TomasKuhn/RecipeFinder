@@ -12,5 +12,4 @@ val repoModule = module {
     single { Db.getInstance() }
 }
 
-private inline fun <reified T> Scope.createApiService(): T =
-    get<RetrofitService>().createApiService()
+private inline fun <reified T> Scope.createApiService(): T = get<RetrofitService>().createApiService()

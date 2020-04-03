@@ -5,9 +5,9 @@ import com.tkuhn.recipefinder.BaseUnitTest
 import com.tkuhn.recipefinder.MockData
 import com.tkuhn.recipefinder.datasource.database.Db
 import com.tkuhn.recipefinder.datasource.database.dao.RecipesDao
-import com.tkuhn.recipefinder.datasource.network.RecipesService
 import com.tkuhn.recipefinder.datasource.network.Resource
 import com.tkuhn.recipefinder.datasource.network.ResourceError
+import com.tkuhn.recipefinder.datasource.network.api.RecipesApiService
 import com.tkuhn.recipefinder.datasource.network.dto.NetworkRecipeDetail
 import com.tkuhn.recipefinder.domain.Recipe
 import com.tkuhn.recipefinder.domain.RecipeDetail
@@ -32,7 +32,7 @@ import retrofit2.Response
 internal class RecipesRepoTest : BaseUnitTest() {
 
     companion object {
-        private val recipesService: RecipesService = mockk()
+        private val recipesService: RecipesApiService = mockk()
         private val db: Db = mockk()
         private val recipesDao: RecipesDao = mockk(relaxed = true)
         private val recipeDetailErrorResponse = mockk<Response<NetworkRecipeDetail>>()
